@@ -87,13 +87,6 @@
                 </form>
             </div>
 
-            <div class="card-footer bg-light border-top text-center py-3">
-                <small class="text-muted d-block">
-                    <strong>Akun Demo Tersedia:</strong><br>
-                    Admin: <code>admin@gmail.com</code> / <code>admin123</code><br>
-                    User: <code>user@gmail.com</code> / <code>user123</code>
-                </small>
-            </div>
         </div>
     </div>
 </div>
