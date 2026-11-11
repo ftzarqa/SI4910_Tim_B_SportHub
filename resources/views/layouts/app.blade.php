@@ -72,7 +72,7 @@
 </head>
 <body>
     <!-- Navbar Sederhana -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark"></nav>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('alat-olahraga.index') }}">
                 <i class="bi bi-trophy-fill fs-4 text-warning"></i>
@@ -82,17 +82,47 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center gap-1">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('alat-olahraga.index') ? 'active fw-semibold' : '' }}" href="{{ route('alat-olahraga.index') }}">
-                            <i class="bi bi-grid-fill me-1"></i> Daftar Alat
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('alat-olahraga.create') ? 'active fw-semibold' : '' }}" href="{{ route('alat-olahraga.create') }}">
-                            <i class="bi bi-plus-circle-fill me-1"></i> Tambah Alat
-                        </a>
-                    </li>
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('alat-olahraga.index') ? 'active fw-semibold' : '' }}" href="{{ route('alat-olahraga.index') }}">
+                                <i class="bi bi-grid-fill me-1"></i> Daftar Alat
+                            </a>
+                        </li>
+                        @if (auth()->user()->isAdmin())
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('alat-olahraga.create') ? 'active fw-semibold' : '' }}" href="{{ route('alat-olahraga.create') }}">
+                                    <i class="bi bi-plus-circle-fill me-1"></i> Tambah Alat
+                                </a>
+                            </li>
+                        @endif
+
+                        <li class="nav-item d-flex align-items-center ms-lg-2">
+                            <span class="text-white-50 small me-2">
+                                <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
+                            </span>
+                            @if (auth()->user()->isAdmin())
+                                <span class="badge bg-danger text-uppercase me-2">Admin</span>
+                            @else
+                                <span class="badge bg-secondary text-uppercase me-2">User</span>
+                            @endif
+                        </li>
+
+                        <li class="nav-item">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-outline-light" title="Keluar dari akun">
+                                    <i class="bi bi-box-arrow-right me-1"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="btn btn-sm btn-outline-light">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                            </a>
+                        </li>
+                    @endauth
                 </ul>
             </div>
         </div>

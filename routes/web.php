@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlatOlahragaController;
-use App\Models\AlatOlahraga;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -10,8 +10,27 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Route utama mengarah langsung ke daftar alat olahraga
-Route::get('/', [AlatOlahragaController::class, 'index']); //eror disini
+// Route untuk Guest (Belum Login)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
 
-// Resource route CRUD alat olahraga tanpa proteksi middleware
-Route::resource('alat-olahraga', AlatOlahragaController::class);
+// Route untuk User Terautentikasi (Semua Role: Admin & User)
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Route Khusus Admin: Aksi manipulasi data (create, store, edit, update, destroy)
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/alat-olahraga/create', [AlatOlahragaController::class, 'create'])->name('alat-olahraga.create');
+        Route::post('/alat-olahraga', [AlatOlahragaController::class, 'store'])->name('alat-olahraga.store');
+        Route::get('/alat-olahraga/{id}/edit', [AlatOlahragaController::class, 'edit'])->name('alat-olahraga.edit');
+        Route::put('/alat-olahraga/{id}', [AlatOlahragaController::class, 'update'])->name('alat-olahraga.update');
+        Route::delete('/alat-olahraga/{id}', [AlatOlahragaController::class, 'destroy'])->name('alat-olahraga.destroy');
+    });
+
+    // Route Terautentikasi Umum: Index & Detail
+    Route::get('/', [AlatOlahragaController::class, 'index'])->name('home');
+    Route::get('/alat-olahraga', [AlatOlahragaController::class, 'index'])->name('alat-olahraga.index');
+    Route::get('/alat-olahraga/{id}', [AlatOlahragaController::class, 'show'])->name('alat-olahraga.show')->whereNumber('id');
+});

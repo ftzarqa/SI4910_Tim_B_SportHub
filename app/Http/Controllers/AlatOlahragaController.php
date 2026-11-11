@@ -22,8 +22,7 @@ class AlatOlahragaController extends Controller
      */
     public function create()
     {
-        //return view alat_olahraga.create
-         return view('alat_olahraga.index');
+        return view('alat_olahraga.create');
     }
 
     /**
@@ -50,7 +49,11 @@ class AlatOlahragaController extends Controller
      */
     public function show($id)
     {
-        return redirect()->route('alat-olahraga.edit', $id);
+        if (auth()->user()?->isAdmin()) {
+            return redirect()->route('alat-olahraga.edit', $id);
+        }
+
+        return redirect()->route('alat-olahraga.index');
     }
 
     /**
@@ -90,8 +93,7 @@ class AlatOlahragaController extends Controller
     {
         $alatOlahraga = AlatOlahraga::findOrFail($id);
 
-        //$alatOlahraga delete
-        $alatOlahraga = delete();
+        $alatOlahraga->delete();
         
         return redirect()->route('alat-olahraga.index')
             ->with('success', 'Data alat olahraga LANCAR dihapus!');

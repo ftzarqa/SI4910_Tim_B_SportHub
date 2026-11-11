@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\AlatOlahraga;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,7 +14,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Data Awal Katalog Alat Olahraga
+        // 1. Akun Default Pengguna & Administrator
+        User::updateOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name'     => 'Administrator',
+                'password' => Hash::make('admin123'),
+                'role'     => 'admin',
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'user@gmail.com'],
+            [
+                'name'     => 'Penyewa Olahraga',
+                'password' => Hash::make('user123'),
+                'role'     => 'user',
+            ]
+        );
+
+        // 2. Data Awal Katalog Alat Olahraga
         AlatOlahraga::create([
             'nama_alat'  => 'Raket Badminton Yonex Nanoray',
             'kategori'   => 'Bulu Tangkis',

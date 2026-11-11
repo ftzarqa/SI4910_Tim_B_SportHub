@@ -14,9 +14,11 @@
                 <p class="text-muted mb-0">Kelola DAH</p>
             </div>
             
-            <a href="{{ route('alat-olahraga.create') }}" class="btn btn-primary shadow-sm">
-                <i class="bi bi-plus-lg me-1"></i> Tambah Alat Baru
-            </a>
+            @if (auth()->user()->isAdmin())
+                <a href="{{ route('alat-olahraga.create') }}" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-plus-lg me-1"></i> Tambah Alat Baru
+                </a>
+            @endif
         </div>
 
         <div class="card shadow-sm">
@@ -25,7 +27,7 @@
                     <i class="bi bi-table me-1"></i> Inventaris
                 </span>
                 <span class="badge bg-light text-secondary border">
-                    Total: {{ count($alatOlahraga) }} Data
+                    Total: {{ count($alatOlahraga ?? []) }} Data
                 </span>
             </div>
             <div class="card-body p-0">
@@ -39,7 +41,9 @@
                                 <th scope="col">Kondisi</th>
                                 <th scope="col">Tarif Sewa perHARI</th>
                                 <th scope="col" class="text-center">Stok</th>
-                                <th scope="col" class="text-center" style="width: 170px;">Aksi</th>
+                                @if (auth()->user()->isAdmin())
+                                    <th scope="col" class="text-center" style="width: 170px;">Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -53,7 +57,7 @@
                                     </td>
                                     <td>
                                         <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle">
-                                            <i class="bi bi-tag-fill me-1"></i>{{ $item->kategori }}
+                                             <i class="bi bi-tag-fill me-1"></i>{{ $item->kategori }}
                                         </span>
                                     </td>
                                     <td>
@@ -89,31 +93,35 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td class="text-center">
-                                        <div class="d-inline-flex gap-1">
-                                            <a href="{{ route('alat-olahraga.edit', $item->id) }}" class="btn btn-sm btn-outline-warning" title="Edit Alat">
-                                                <i class="bi bi-pencil-square me-1"></i>Edit
-                                            </a>
-                                            <form action="{{ route('alat-olahraga.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus alat &quot;{{ $item->nama_alat }}&quot;?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus Alat">
-                                                    <i class="bi bi-trash3-fill me-1"></i>Hapus
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    @if (auth()->user()->isAdmin())
+                                        <td class="text-center">
+                                            <div class="d-inline-flex gap-1">
+                                                <a href="{{ route('alat-olahraga.edit', $item->id) }}" class="btn btn-sm btn-outline-warning" title="Edit Alat">
+                                                    <i class="bi bi-pencil-square me-1"></i>Edit
+                                                </a>
+                                                <form action="{{ route('alat-olahraga.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus alat &quot;{{ $item->nama_alat }}&quot;?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus Alat">
+                                                        <i class="bi bi-trash3-fill me-1"></i>Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-5">
+                                    <td colspan="{{ auth()->user()->isAdmin() ? 7 : 6 }}" class="text-center py-5">
                                         <div class="text-muted">
                                             <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary opacity-50"></i>
-                                            <h5 class="fw-semibold">Belom ada ALAT</h5>
-                                            <p class="small mb-3">ALAT KOSONG.</p>
-                                            <a href="{{ route('alat-olahraga.create') }}" class="btn btn-sm btn-primary">
-                                                <i class="bi bi-plus-lg me-1"></i> Tambah Data 
-                                            </a>
+                                            <h5 class="fw-semibold">Belum ada ALAT</h5>
+                                            <p class="small mb-3">Katalog alat olahraga masih kosong.</p>
+                                            @if (auth()->user()->isAdmin())
+                                                <a href="{{ route('alat-olahraga.create') }}" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-plus-lg me-1"></i> Tambah Data 
+                                                </a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
