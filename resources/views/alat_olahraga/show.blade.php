@@ -50,7 +50,7 @@
                     <div>
                         <div class="flex items-center gap-2 text-xs text-emerald-300 font-semibold mb-0.5">
                             <span class="font-mono tabular-nums">SKU: SPT-{{ str_pad($alatOlahraga->id, 3, '0', STR_PAD_LEFT) }}</span>
-                            <span>•</span>
+                            <span></span>
                             <span>{{ $alatOlahraga->kategori }}</span>
                         </div>
                         <h1 class="text-lg sm:text-xl font-extrabold text-white tracking-tight">
@@ -63,11 +63,11 @@
                 <div>
                     @if ($isAvailable)
                         <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-emerald-500/20 text-[#80fab2] text-xs font-bold border border-emerald-500/30">
-                            Unit Tersedia
+                            Tersedia
                         </span>
                     @elseif ($isLowStock)
                         <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/30">
-                            Stok Menipis
+                            Menipis Bosq
                         </span>
                     @else
                         <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-red-500/20 text-red-300 text-xs font-bold border border-red-500/30">

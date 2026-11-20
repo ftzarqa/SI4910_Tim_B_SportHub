@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="hidden xl:flex flex-col text-left">
                                     <span class="text-xs font-bold text-[#1E293B] leading-tight">{{ auth()->user()->name }}</span>
-                                    <span class="text-[11px] text-[#475569]">{{ auth()->user()->role === 'admin' ? 'Duty Manager' : 'Verified Member' }}</span>
+                                    <span class="text-[11px] text-[#475569]">{{ auth()->user()->role === 'admin' ? 'ATMINT' : 'Aku raja kau user' }}</span>
                                 </div>
                             </div>
 

@@ -15,7 +15,7 @@
                         Inventaris &amp; Rental Peralatan Olahraga
                     </h1>
                     <p class="text-white/90 text-xs sm:text-sm max-w-2xl mt-0.5">
-                        Kelola ketersediaan raket, bola, pelindung, dan perlengkapan olahraga secara realtime untuk member dan penyewa venue.
+                        SEMUA DATA ALAT ADA DISINI POKOKNYA, Lalu M Iffat Zarqaa 102022500174 hackthebox.com
                     </p>
                 </div>
 
@@ -50,7 +50,6 @@
                             <span class="text-2xl font-extrabold text-[#1E293B] font-mono tabular-nums tracking-tight">{{ number_format($totalUnit) }} Unit</span>
                             <div class="mt-1 flex items-center gap-1 text-[11px] text-[#475569]">
                                 <span class="material-symbols-outlined text-xs text-[#009B5D]">category</span>
-                                <span>{{ $totalKategori }} Kategori ({{ $totalItem }} Model)</span>
                             </div>
                         </div>
                     </div>
@@ -86,7 +85,7 @@
                             <span class="text-2xl font-extrabold text-[#0C2340] font-mono tabular-nums tracking-tight">{{ number_format($sedangDisewa) }} Unit</span>
                             <div class="mt-1 flex items-center gap-1 text-[11px] text-[#475569]">
                                 <span class="material-symbols-outlined text-xs text-[#0C2340]">sports_score</span>
-                                <span>Sedang aktif terpakai</span>
+                                <span>AKTIP BUN</span>
                             </div>
                         </div>
                     </div>
@@ -254,7 +253,7 @@
                             <div class="absolute top-2.5 left-2.5">
                                 @if ($isAvailable)
                                     <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-[#007F4B] text-[11px] font-bold border border-emerald-200 shadow-sm">
-                                        Tersedia
+                                     READYBOSQ
                                     </span>
                                 @elseif ($isLowStock)
                                     <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200 shadow-sm">
@@ -268,9 +267,7 @@
                             </div>
 
                             <!-- Placement Info -->
-                            <div class="absolute bottom-2 right-2.5 text-[10px] text-[#475569] font-mono tabular-nums bg-white/95 px-2 py-0.5 rounded-md border border-[#E2E8F0] shadow-sm">
-                                Rak {{ chr(65 + ($item->id % 6)) }}-0{{ ($item->id % 9) + 1 }}
-                            </div>
+                          
                         </div>
 
                         <!-- Card Content -->
