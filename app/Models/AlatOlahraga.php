@@ -15,6 +15,7 @@ class AlatOlahraga extends Model
         'kondisi',
         'tarif_sewa',
         'stok',
+        'gambar',
     ];
 
     protected $casts = [

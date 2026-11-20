@@ -20,13 +20,33 @@
 
     <!-- Main Detail Card (rounded-xl border border-[#E2E8F0] bg-white) -->
     <div class="bg-white rounded-xl shadow-sm border border-[#E2E8F0] overflow-hidden">
-        <!-- Detail Visual Banner (#0C2340 Deep Navy) -->
+        @php
+            $showImgUrl = null;
+            if ($alatOlahraga->gambar) {
+                $showImgUrl = str_starts_with($alatOlahraga->gambar, 'images/') 
+                    ? asset($alatOlahraga->gambar) 
+                    : asset('storage/' . $alatOlahraga->gambar);
+            }
+
+            $kLower = strtolower($alatOlahraga->kondisi);
+            $isAvailable = $alatOlahraga->stok > 3 && !str_contains($kLower, 'rusak');
+            $isLowStock = $alatOlahraga->stok > 0 && $alatOlahraga->stok <= 3 && !str_contains($kLower, 'rusak');
+        @endphp
+
+        <!-- Detail Header Banner (#0C2340 Deep Navy) -->
         <div class="bg-[#0C2340] p-5 sm:p-6 text-white">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-lg bg-[#009B5D] flex items-center justify-center text-white shadow-sm shrink-0">
-                        <span class="material-symbols-outlined text-2xl">sports_tennis</span>
-                    </div>
+                <div class="flex items-center gap-3.5">
+                    @if ($showImgUrl)
+                        <img src="{{ $showImgUrl }}"
+                             alt="{{ $alatOlahraga->nama_alat }}"
+                             class="w-14 h-14 rounded-lg object-cover border border-white/20 shadow-sm shrink-0 bg-white/10">
+                    @else
+                        <div class="w-12 h-12 rounded-lg bg-white/10 border border-white/20 text-white flex items-center justify-center shrink-0">
+                            <span class="font-mono tabular-nums text-xs font-bold text-slate-300">SPT-{{ str_pad($alatOlahraga->id, 3, '0', STR_PAD_LEFT) }}</span>
+                        </div>
+                    @endif
+
                     <div>
                         <div class="flex items-center gap-2 text-xs text-emerald-300 font-semibold mb-0.5">
                             <span class="font-mono tabular-nums">SKU: SPT-{{ str_pad($alatOlahraga->id, 3, '0', STR_PAD_LEFT) }}</span>
@@ -39,12 +59,7 @@
                     </div>
                 </div>
 
-                <!-- Status Badge (rounded-md, no decorative dot) -->
-                @php
-                    $kLower = strtolower($alatOlahraga->kondisi);
-                    $isAvailable = $alatOlahraga->stok > 3 && !str_contains($kLower, 'rusak');
-                    $isLowStock = $alatOlahraga->stok > 0 && $alatOlahraga->stok <= 3 && !str_contains($kLower, 'rusak');
-                @endphp
+                <!-- Status Badge (rounded-md) -->
                 <div>
                     @if ($isAvailable)
                         <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-emerald-500/20 text-[#80fab2] text-xs font-bold border border-emerald-500/30">
@@ -62,6 +77,15 @@
                 </div>
             </div>
         </div>
+
+        @if ($showImgUrl)
+            <!-- Dedicated Product Photo Display -->
+            <div class="w-full bg-[#F8FAFC] border-b border-[#E2E8F0] p-6 flex items-center justify-center">
+                <img src="{{ $showImgUrl }}"
+                     alt="{{ $alatOlahraga->nama_alat }}"
+                     class="max-h-64 max-w-md w-full object-contain rounded-lg">
+            </div>
+        @endif
 
         <!-- Specifications & Metrics Grid -->
         <div class="p-5 sm:p-6 space-y-5">

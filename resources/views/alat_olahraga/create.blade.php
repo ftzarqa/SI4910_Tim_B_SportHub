@@ -35,7 +35,7 @@
 
         <!-- Form Body -->
         <div class="p-5 sm:p-6">
-            <form action="{{ route('alat-olahraga.store') }}" method="POST" class="space-y-4">
+            <form action="{{ route('alat-olahraga.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
 
                 <!-- Nama Alat -->
@@ -173,6 +173,25 @@
                             </p>
                         @enderror
                     </div>
+                </div>
+
+                <!-- Foto Produk (Upload Gambar) -->
+                <div>
+                    <label for="gambar" class="block text-xs font-bold text-[#1E293B] uppercase tracking-wider mb-1.5">
+                        Foto Alat Olahraga <span class="text-slate-400 font-normal">(Opsional)</span>
+                    </label>
+                    <input type="file"
+                           name="gambar"
+                           id="gambar"
+                           accept="image/*"
+                           class="w-full text-xs text-[#1E293B] file:mr-3 file:py-2 file:px-3.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#007F4B] hover:file:bg-emerald-100 border border-[#E2E8F0] rounded-lg bg-[#F8FAFC] cursor-pointer transition-colors duration-150">
+                    <p class="text-[11px] text-[#475569] mt-1">Format: JPG, JPEG, PNG, WEBP. Maksimal 2MB.</p>
+                    @error('gambar')
+                        <p class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
+                            <span class="material-symbols-outlined text-sm">cancel</span>
+                            <span>{{ $message }}</span>
+                        </p>
+                    @enderror
                 </div>
 
                 <!-- Action Buttons: Emerald Green #009B5D -->

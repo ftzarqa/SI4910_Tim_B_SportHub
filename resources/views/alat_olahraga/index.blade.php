@@ -8,28 +8,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-6">
         <section class="relative w-full overflow-hidden bg-gradient-to-r from-[#65C14A] to-[#39A845] p-6 sm:p-8 rounded-xl text-white shadow-sm">
             <div class="relative flex flex-col gap-6">
-                <!-- Header Banner -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/20 text-white text-xs font-bold uppercase tracking-wider mb-2">
-                            <span class="material-symbols-outlined text-sm">inventory_2</span>
-                            <span>Katalog &amp; Logistik Alat</span>
-                        </div>
-                        <span class="sr-only">Daftar Alat Olahraga</span>
-                        <h1 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-                            Inventaris &amp; Rental Peralatan Olahraga
-                        </h1>
-                        <p class="text-white/90 text-xs sm:text-sm max-w-2xl mt-1">
-                            Kelola ketersediaan raket, bola, pelindung, dan perlengkapan olahraga secara realtime untuk member dan penyewa venue.
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-3 bg-white/15 px-3.5 py-2.5 rounded-lg border border-white/20 shadow-sm self-start md:self-auto">
-                        <span class="material-symbols-outlined text-[#80fab2] text-xl">sensors</span>
-                        <div class="flex flex-col">
-                            <span class="text-[10px] text-white/80 uppercase font-semibold">Integrasi Loker</span>
-                            <span class="text-xs font-bold text-white">Sistem Aktif</span>
-                        </div>
-                    </div>
+                <!-- Header Banner (Bersih tanpa badge atau status box dekoratif) -->
+                <div class="flex flex-col gap-1">
+                    <span class="sr-only">Daftar Alat Olahraga</span>
+                    <h1 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                        Inventaris &amp; Rental Peralatan Olahraga
+                    </h1>
+                    <p class="text-white/90 text-xs sm:text-sm max-w-2xl mt-0.5">
+                        Kelola ketersediaan raket, bola, pelindung, dan perlengkapan olahraga secara realtime untuk member dan penyewa venue.
+                    </p>
                 </div>
 
                 <!-- Dynamic Stats Calculation -->
@@ -46,15 +33,10 @@
 
                     $persenTersedia = $totalUnit > 0 ? round(($tersediaUnit / $totalUnit) * 100, 1) : 0;
                     $sedangDisewa = max(0, round($totalUnit * 0.25));
-
-                    $perluServis = $alatOlahraga->filter(function($item) {
-                        $k = strtolower($item->kondisi);
-                        return str_contains($k, 'rusak') || str_contains($k, 'perbaikan');
-                    })->sum('stok');
                 @endphp
 
-                <!-- 4 Stat Metric Cards (rounded-xl, tabular-nums) -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- 3 Stat Metric Cards (Proporsional 3 Kolom, tabular-nums) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <!-- Card 1: Total Unit -->
                     <div class="bg-white rounded-xl p-4 shadow-sm border border-[#E2E8F0] text-[#1E293B] flex flex-col justify-between">
                         <div class="flex items-center justify-between">
@@ -108,24 +90,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Card 4: Dalam Perawatan -->
-                    <div class="bg-white rounded-xl p-4 shadow-sm border border-[#E2E8F0] text-[#1E293B] flex flex-col justify-between">
-                        <div class="flex items-center justify-between">
-                            <div class="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
-                                <span class="material-symbols-outlined text-xl">build</span>
-                            </div>
-                            <span class="text-[11px] font-bold text-red-700 px-2 py-0.5 rounded-md bg-red-50 border border-red-200">Servis</span>
-                        </div>
-                        <div class="mt-3">
-                            <span class="text-xs text-[#475569] block font-semibold">Perbaikan / Rusak</span>
-                            <span class="text-2xl font-extrabold text-red-600 font-mono tabular-nums tracking-tight">{{ number_format($perluServis) }} Unit</span>
-                            <div class="mt-1 flex items-center gap-1 text-[11px] text-[#475569]">
-                                <span class="material-symbols-outlined text-xs text-red-500">handyman</span>
-                                <span>Jadwal pemeliharaan</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -136,7 +100,7 @@
 
         <!-- SECTION 2: Toolbar Filter (Soft Ice Blue Container #E6F2F8, rounded-xl) -->
         <div class="bg-[#E6F2F8] rounded-xl p-4 sm:p-5 border border-[#E2E8F0] shadow-sm flex flex-col gap-4">
-            <!-- Row 1: Search & Context -->
+            <!-- Row 1: Search -->
             <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
                 <div class="relative flex-1 max-w-xl">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#475569]">
@@ -153,11 +117,6 @@
                             title="Hapus pencarian">
                         <span class="material-symbols-outlined text-base">cancel</span>
                     </button>
-                </div>
-
-                <div class="hidden xl:flex items-center gap-2 text-xs font-semibold text-[#475569]">
-                    <span class="material-symbols-outlined text-base text-[#009B5D]">database</span>
-                    <span>Database Inventaris SportHub</span>
                 </div>
             </div>
 
@@ -258,25 +217,15 @@
             @forelse ($alatOlahraga as $item)
                 @php
                     $kLower = strtolower($item->kondisi);
-                    $katLower = strtolower($item->kategori);
-
-                    $categoryIcon = 'sports';
-                    if (str_contains($katLower, 'badminton') || str_contains($katLower, 'tangkis')) {
-                        $categoryIcon = 'sports_tennis';
-                    } elseif (str_contains($katLower, 'basket')) {
-                        $categoryIcon = 'sports_basketball';
-                    } elseif (str_contains($katLower, 'futsal') || str_contains($katLower, 'sepak')) {
-                        $categoryIcon = 'sports_soccer';
-                    } elseif (str_contains($katLower, 'tenis')) {
-                        $categoryIcon = 'sports_baseball';
-                    } elseif (str_contains($katLower, 'gym') || str_contains($katLower, 'fitness')) {
-                        $categoryIcon = 'fitness_center';
-                    } elseif (str_contains($katLower, 'renang')) {
-                        $categoryIcon = 'pool';
-                    }
-
                     $isAvailable = $item->stok > 3 && !str_contains($kLower, 'rusak');
                     $isLowStock = $item->stok > 0 && $item->stok <= 3 && !str_contains($kLower, 'rusak');
+
+                    $imgUrl = null;
+                    if ($item->gambar) {
+                        $imgUrl = str_starts_with($item->gambar, 'images/') 
+                            ? asset($item->gambar) 
+                            : asset('storage/' . $item->gambar);
+                    }
                 @endphp
 
                 <div class="equipment-card bg-white rounded-xl shadow-sm hover:shadow-md border border-[#E2E8F0] transition-shadow duration-150 flex flex-col justify-between overflow-hidden"
@@ -288,29 +237,38 @@
                      data-stock="{{ $item->stok }}">
 
                     <div>
-                        <!-- Header Box with Icon Placeholder -->
-                        <div class="relative h-36 w-full bg-[#F8FAFC] border-b border-[#E2E8F0] flex items-center justify-center">
-                            <span class="material-symbols-outlined text-6xl text-slate-300">{{ $categoryIcon }}</span>
+                        <!-- Product Image Header (h-44 w-full object-cover, fallback ke inisial/SKU bersih) -->
+                        <div class="relative h-44 w-full bg-[#F8FAFC] border-b border-[#E2E8F0] overflow-hidden flex items-center justify-center">
+                            @if ($imgUrl)
+                                <img src="{{ $imgUrl }}"
+                                     alt="{{ $item->nama_alat }}"
+                                     class="h-44 w-full object-cover">
+                            @else
+                                <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 text-[#475569]">
+                                    <span class="font-mono tabular-nums text-xs font-bold text-slate-500">SPT-{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}</span>
+                                    <span class="text-[11px] text-slate-400 font-medium mt-0.5">{{ $item->kategori }}</span>
+                                </div>
+                            @endif
 
-                            <!-- Status Badge (rounded-md, no decorative dot) -->
+                            <!-- Status Badge (rounded-md) -->
                             <div class="absolute top-2.5 left-2.5">
                                 @if ($isAvailable)
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-[#007F4B] text-[11px] font-bold border border-emerald-200">
+                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-[#007F4B] text-[11px] font-bold border border-emerald-200 shadow-sm">
                                         Tersedia
                                     </span>
                                 @elseif ($isLowStock)
-                                    <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+                                    <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200 shadow-sm">
                                         Stok Menipis
                                     </span>
                                 @else
-                                    <span class="px-2 py-0.5 rounded-md bg-red-50 text-red-600 text-[11px] font-bold border border-red-200">
+                                    <span class="px-2 py-0.5 rounded-md bg-red-50 text-red-600 text-[11px] font-bold border border-red-200 shadow-sm">
                                         {{ str_contains($kLower, 'rusak') ? 'Perlu Servis' : 'Habis' }}
                                     </span>
                                 @endif
                             </div>
 
                             <!-- Placement Info -->
-                            <div class="absolute bottom-2 right-2.5 text-[10px] text-[#475569] font-mono tabular-nums bg-white px-2 py-0.5 rounded-md border border-[#E2E8F0]">
+                            <div class="absolute bottom-2 right-2.5 text-[10px] text-[#475569] font-mono tabular-nums bg-white/95 px-2 py-0.5 rounded-md border border-[#E2E8F0] shadow-sm">
                                 Rak {{ chr(65 + ($item->id % 6)) }}-0{{ ($item->id % 9) + 1 }}
                             </div>
                         </div>

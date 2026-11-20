@@ -64,21 +64,15 @@
 
     <!-- 1. TOP UTILITY BAR (Deep Navy #0C2340) -->
     <header class="w-full">
-        <div class="bg-[#0C2340] text-white py-2 px-4 sm:px-6 lg:px-8 border-b border-[#1c355e]">
-            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs gap-1 sm:gap-4">
-                <div class="flex items-center gap-2 font-medium text-slate-300">
-                    <span class="text-[#65C14A] font-bold">SPORTHUB</span>
-                    <span>Sistem Manajemen Venue Olahraga Terpadu</span>
+        <div class="bg-[#0C2340] text-white py-1.5 px-4 sm:px-6 lg:px-8 border-b border-[#1c355e]">
+            <div class="max-w-7xl mx-auto flex items-center justify-end text-xs gap-4 text-slate-300">
+                <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm text-[#80fab2]">schedule</span>
+                    <span>Jam Operasional: 06:00 - 23:00 WIB</span>
                 </div>
-                <div class="flex items-center gap-4 text-slate-300">
-                    <div class="flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-sm text-[#80fab2]">schedule</span>
-                        <span>06:00 - 23:00 WIB</span>
-                    </div>
-                    <div class="hidden md:flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-sm text-[#80fab2]">call</span>
-                        <span>+62 811-9876-5432</span>
-                    </div>
+                <div class="hidden sm:flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm text-[#80fab2]">call</span>
+                    <span>+62 811-9876-5432</span>
                 </div>
             </div>
         </div>
@@ -86,16 +80,10 @@
         <!-- 2. STICKY WHITE NAVBAR (#FFFFFF, border-b #E2E8F0) -->
         <div class="sticky top-0 z-40 bg-white border-b border-[#E2E8F0] shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="h-16 sm:h-20 flex items-center justify-between gap-4">
-                    <!-- Brand Logo pointing to url('/') -->
-                    <a href="{{ url('/') }}" class="flex items-center gap-3 shrink-0 group">
-                        <div class="w-10 h-10 rounded-lg bg-[#009B5D] flex items-center justify-center text-white shadow-sm group-hover:bg-[#007F4B] transition-colors duration-150">
-                            <span class="material-symbols-outlined text-2xl">stadium</span>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-xl font-extrabold text-[#0C2340] leading-none tracking-tight">SportHub</span>
-                            <span class="text-[11px] text-[#475569] font-medium tracking-wide">Venue &amp; Rental System</span>
-                        </div>
+                <div class="h-16 flex items-center justify-between gap-4">
+                    <!-- Clean Brand Logo pointing to url('/') -->
+                    <a href="{{ url('/') }}" class="flex items-center shrink-0">
+                        <span class="text-xl font-extrabold text-[#0C2340] tracking-tight hover:text-[#009B5D] transition-colors duration-150">SportHub</span>
                     </a>
 
                     <!-- Center: 4 Navigation Tabs (rounded-lg, NO rounded-full) -->

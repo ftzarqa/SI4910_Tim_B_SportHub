@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#E2E8F0" />
+    </linearGradient>
+    <radialGradient id="ball" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#F97316" />
+      <stop offset="60%" stop-color="#EA580C" />
+      <stop offset="100%" stop-color="#9A3412" />
+    </radialGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)" />
+  <g transform="translate(200, 140)">
+    <!-- Shadow -->
+    <ellipse cx="0" cy="95" rx="80" ry="14" fill="#0C2340" opacity="0.15" />
+    <!-- Ball body -->
+    <circle cx="0" cy="0" r="82" fill="url(#ball)" stroke="#7C2D12" stroke-width="3" />
+    <!-- Ball Seams -->
+    <!-- Horizontal -->
+    <line x1="-82" y1="0" x2="82" y2="0" stroke="#1E293B" stroke-width="3.5" />
+    <!-- Vertical -->
+    <line x1="0" y1="-82" x2="0" y2="82" stroke="#1E293B" stroke-width="3.5" />
+    <!-- Left Curve -->
+    <path d="M -54 -62 C -20 -30 -20 30 -54 62" fill="none" stroke="#1E293B" stroke-width="3.5" />
+    <!-- Right Curve -->
+    <path d="M 54 -62 C 20 -30 20 30 54 62" fill="none" stroke="#1E293B" stroke-width="3.5" />
+    <!-- Subtle shine -->
+    <ellipse cx="-30" cy="-35" rx="28" ry="14" transform="rotate(-30, -30, -35)" fill="#FFFFFF" opacity="0.2" />
+  </g>
+  <text x="20" y="278" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="700" fill="#0C2340" letter-spacing="1">MOLTEN GG7X</text>
+  <text x="380" y="278" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="600" fill="#EA580C" text-anchor="end">BASKETBALL</text>
+</svg>
