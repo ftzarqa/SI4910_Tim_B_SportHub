@@ -33,4 +33,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [AlatOlahragaController::class, 'index'])->name('home');
     Route::get('/alat-olahraga', [AlatOlahragaController::class, 'index'])->name('alat-olahraga.index');
     Route::get('/alat-olahraga/{id}', [AlatOlahragaController::class, 'show'])->name('alat-olahraga.show')->whereNumber('id');
+
+    // PLACEHOLDER MODUL TIM - Ganti saat merge
+    Route::get('/lapangan', function () {
+        return view('placeholders.lapangan');
+    })->name('lapangan.index');
+
+    Route::get('/member', function () {
+        return view('placeholders.member');
+    })->name('member.index');
+
+    Route::get('/instruktur', function () {
+        return view('placeholders.instruktur');
+    })->name('instruktur.index');
 });

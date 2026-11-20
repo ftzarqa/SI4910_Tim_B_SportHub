@@ -204,4 +204,56 @@ class AlatOlahragaTest extends TestCase
             'id' => $alat->id,
         ]);
     }
+
+    public function test_regular_user_can_view_show_page(): void
+    {
+        $alat = AlatOlahraga::create([
+            'nama_alat'  => 'Shuttlecock Yonex Aerosensa',
+            'kategori'   => 'Bulu Tangkis',
+            'kondisi'    => 'Baru',
+            'tarif_sewa' => 10000,
+            'stok'       => 20,
+        ]);
+
+        $response = $this->actingAs($this->regularUser)->get(route('alat-olahraga.show', $alat->id));
+        $response->assertStatus(200);
+        $response->assertSee('Shuttlecock Yonex Aerosensa');
+    }
+
+    public function test_admin_can_view_show_page(): void
+    {
+        $alat = AlatOlahraga::create([
+            'nama_alat'  => 'Shuttlecock Yonex Aerosensa',
+            'kategori'   => 'Bulu Tangkis',
+            'kondisi'    => 'Baru',
+            'tarif_sewa' => 10000,
+            'stok'       => 20,
+        ]);
+
+        $response = $this->actingAs($this->admin)->get(route('alat-olahraga.show', $alat->id));
+        $response->assertStatus(200);
+        $response->assertSee('Shuttlecock Yonex Aerosensa');
+    }
+
+    public function test_authenticated_user_can_access_team_placeholders(): void
+    {
+        $responseLapangan = $this->actingAs($this->regularUser)->get('/lapangan');
+        $responseLapangan->assertStatus(200);
+        $responseLapangan->assertSee('Manajemen Lapangan & Area');
+
+        $responseMember = $this->actingAs($this->regularUser)->get('/member');
+        $responseMember->assertStatus(200);
+        $responseMember->assertSee('Manajemen Pelanggan & Member');
+
+        $responseInstruktur = $this->actingAs($this->regularUser)->get('/instruktur');
+        $responseInstruktur->assertStatus(200);
+        $responseInstruktur->assertSee('Direktori Instruktur & Coach');
+    }
+
+    public function test_guest_is_redirected_from_placeholders(): void
+    {
+        $this->get('/lapangan')->assertRedirect('/login');
+        $this->get('/member')->assertRedirect('/login');
+        $this->get('/instruktur')->assertRedirect('/login');
+    }
 }

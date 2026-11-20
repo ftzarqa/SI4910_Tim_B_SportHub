@@ -45,15 +45,13 @@ class AlatOlahragaController extends Controller
     }
 
     /**
-     * Menampilkan detail alat olahraga (dialihkan ke halaman edit).
+     * Menampilkan detail alat olahraga.
      */
     public function show($id)
     {
-        if (auth()->user()?->isAdmin()) {
-            return redirect()->route('alat-olahraga.edit', $id);
-        }
+        $alatOlahraga = AlatOlahraga::findOrFail($id);
 
-        return redirect()->route('alat-olahraga.index');
+        return view('alat_olahraga.show', compact('alatOlahraga'));
     }
 
     /**
