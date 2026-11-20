@@ -39,7 +39,7 @@ class AuthController extends Controller
             // Mencegah Session Fixation Attack
             $request->session()->regenerate();
 
-            return redirect()->intended('/alat-olahraga');
+            return redirect()->intended(route('home'));
         }
 
         // Jika kredensial tidak cocok

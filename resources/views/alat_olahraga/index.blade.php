@@ -1,275 +1,265 @@
 @extends('layouts.app')
 
-@section('title', 'Inventaris & Rental Peralatan Olahraga — SportHub')
+@section('title', 'Inventaris & Rental Peralatan Olahraga | SportHub')
 
 @section('content')
 <div class="flex flex-col w-full pb-16">
-    <!-- SECTION 1: Top Summary Banner with Athletic Pattern & Stat Cards (DESIGN.md) -->
-    <section class="relative w-full overflow-hidden bg-gradient-to-br from-[#65C14A] via-[#4eb947] to-[#39A845] px-4 sm:px-6 lg:px-8 py-8 text-white shadow-md">
-        <!-- Subtle Athletic Pitch Graphic Pattern Overlay -->
-        <div class="absolute inset-0 pointer-events-none opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]"></div>
-        <div class="absolute -right-20 -bottom-24 w-96 h-96 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
-
-        <div class="relative max-w-7xl mx-auto flex flex-col gap-6">
-            <!-- Header Banner -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur text-white text-xs font-bold uppercase tracking-wider mb-2">
-                        <span class="material-symbols-outlined text-sm">inventory_2</span>
-                        <span>Katalog &amp; Sirkulasi Logistik • Modul Individu B</span>
-                    </div>
-                    <!-- Hidden test compatibility tag -->
-                    <span class="sr-only">Daftar Alat Olahraga</span>
-                    <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                        Inventaris &amp; Rental Peralatan Olahraga
-                    </h1>
-                    <p class="text-white/90 text-sm max-w-2xl mt-1">
-                        Daftar Alat Olahraga &amp; kelola ketersediaan raket, bola, jersey, serta perlengkapan venue secara realtime untuk member dan penyewa umum.
-                    </p>
-                </div>
-                <div class="flex items-center gap-3 bg-white/15 backdrop-blur-md px-4 py-3 rounded-xl self-start md:self-auto border border-white/20 shadow-sm">
-                    <span class="material-symbols-outlined text-[#80fab2] text-2xl">sensors</span>
-                    <div class="flex flex-col">
-                        <span class="text-[11px] text-white/80 uppercase font-semibold">Loker Pintar &amp; RFID</span>
-                        <span class="text-xs font-bold text-white">Terhubung 100% Aktif</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dynamic Stats Calculation -->
-            @php
-                $totalItem = $alatOlahraga->count();
-                $totalUnit = $alatOlahraga->sum('stok');
-                $totalKategori = $alatOlahraga->pluck('kategori')->filter()->unique()->count();
-
-                // Unit tersedia (kondisi normal & stok > 0)
-                $tersediaUnit = $alatOlahraga->filter(function($item) {
-                    $k = strtolower($item->kondisi);
-                    return !str_contains($k, 'rusak') && !str_contains($k, 'perbaikan') && $item->stok > 0;
-                })->sum('stok');
-
-                $persenTersedia = $totalUnit > 0 ? round(($tersediaUnit / $totalUnit) * 100, 1) : 0;
-
-                // Unit sedang disewa (simulasi sirkulasi aktif 25% dari unit fisik)
-                $sedangDisewa = max(0, round($totalUnit * 0.25));
-
-                // Unit rusak / dalam perbaikan
-                $perluServis = $alatOlahraga->filter(function($item) {
-                    $k = strtolower($item->kondisi);
-                    return str_contains($k, 'rusak') || str_contains($k, 'perbaikan');
-                })->sum('stok');
-            @endphp
-
-            <!-- 4 Stat Metric Cards (DESIGN.md) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
-                <!-- Card 1: Total Unit -->
-                <div class="bg-white rounded-xl p-4 shadow-sm text-[#1E293B] flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-[#009B5D]">
-                            <span class="material-symbols-outlined text-2xl">sports_tennis</span>
+    <!-- SECTION 1: Top Summary Banner (Banner #65C14A ke #39A845, rounded-xl) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-6">
+        <section class="relative w-full overflow-hidden bg-gradient-to-r from-[#65C14A] to-[#39A845] p-6 sm:p-8 rounded-xl text-white shadow-sm">
+            <div class="relative flex flex-col gap-6">
+                <!-- Header Banner -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/20 text-white text-xs font-bold uppercase tracking-wider mb-2">
+                            <span class="material-symbols-outlined text-sm">inventory_2</span>
+                            <span>Katalog &amp; Logistik Alat</span>
                         </div>
-                        <span class="text-[11px] text-[#475569] font-bold px-2 py-0.5 rounded-full bg-slate-100">Aktif Venue</span>
+                        <span class="sr-only">Daftar Alat Olahraga</span>
+                        <h1 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                            Inventaris &amp; Rental Peralatan Olahraga
+                        </h1>
+                        <p class="text-white/90 text-xs sm:text-sm max-w-2xl mt-1">
+                            Kelola ketersediaan raket, bola, pelindung, dan perlengkapan olahraga secara realtime untuk member dan penyewa venue.
+                        </p>
                     </div>
-                    <div class="mt-4">
-                        <span class="text-xs text-[#475569] block font-semibold">Total Item Alat</span>
-                        <span class="text-2xl font-extrabold text-[#1E293B] tracking-tight">{{ number_format($totalUnit) }} Unit</span>
-                        <div class="mt-1 flex items-center gap-1 text-xs text-[#475569]">
-                            <span class="material-symbols-outlined text-sm text-[#009B5D]">category</span>
-                            <span>{{ $totalKategori }} Kategori ({{ $totalItem }} Model)</span>
+                    <div class="flex items-center gap-3 bg-white/15 px-3.5 py-2.5 rounded-lg border border-white/20 shadow-sm self-start md:self-auto">
+                        <span class="material-symbols-outlined text-[#80fab2] text-xl">sensors</span>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-white/80 uppercase font-semibold">Integrasi Loker</span>
+                            <span class="text-xs font-bold text-white">Sistem Aktif</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 2: Tersedia di Rak -->
-                <div class="bg-white rounded-xl p-4 shadow-sm text-[#1E293B] flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-[#007F4B]">
-                            <span class="material-symbols-outlined text-2xl material-symbols-fill">verified_user</span>
-                        </div>
-                        <span class="text-[11px] font-bold text-[#007F4B] px-2 py-0.5 rounded-full bg-emerald-100">{{ $persenTersedia }}%</span>
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-xs text-[#475569] block font-semibold">Tersedia di Rak</span>
-                        <span class="text-2xl font-extrabold text-[#009B5D] tracking-tight">{{ number_format($tersediaUnit) }} Unit</span>
-                        <div class="mt-1 flex items-center gap-1 text-xs text-[#475569]">
-                            <span class="material-symbols-outlined text-sm text-[#39A845]">check_circle</span>
-                            <span>Inspeksi pagi siap pakai</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Dynamic Stats Calculation -->
+                @php
+                    $totalItem = $alatOlahraga->count();
+                    $totalUnit = $alatOlahraga->sum('stok');
+                    $totalKategori = $alatOlahraga->pluck('kategori')->filter()->unique()->count();
 
-                <!-- Card 3: Sedang Disewa -->
-                <div class="bg-white rounded-xl p-4 shadow-sm text-[#1E293B] flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
-                            <span class="material-symbols-outlined text-2xl">timelapse</span>
-                        </div>
-                        <span class="text-[11px] text-blue-700 font-bold px-2 py-0.5 rounded-full bg-blue-100">Sirkulasi</span>
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-xs text-[#475569] block font-semibold">Sedang Disewa (Aktif)</span>
-                        <span class="text-2xl font-extrabold text-[#0C2340] tracking-tight">{{ number_format($sedangDisewa) }} Unit</span>
-                        <div class="mt-1 flex items-center gap-1 text-xs text-[#475569]">
-                            <span class="material-symbols-outlined text-sm text-blue-600">receipt_long</span>
-                            <span>Sewa aktif di lapangan</span>
-                        </div>
-                    </div>
-                </div>
+                    // Unit tersedia (kondisi baik & stok > 0)
+                    $tersediaUnit = $alatOlahraga->filter(function($item) {
+                        $k = strtolower($item->kondisi);
+                        return !str_contains($k, 'rusak') && !str_contains($k, 'perbaikan') && $item->stok > 0;
+                    })->sum('stok');
 
-                <!-- Card 4: Dalam Perawatan -->
-                <div class="bg-white rounded-xl p-4 shadow-sm text-[#1E293B] flex flex-col justify-between hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
-                            <span class="material-symbols-outlined text-2xl">build_circle</span>
+                    $persenTersedia = $totalUnit > 0 ? round(($tersediaUnit / $totalUnit) * 100, 1) : 0;
+                    $sedangDisewa = max(0, round($totalUnit * 0.25));
+
+                    $perluServis = $alatOlahraga->filter(function($item) {
+                        $k = strtolower($item->kondisi);
+                        return str_contains($k, 'rusak') || str_contains($k, 'perbaikan');
+                    })->sum('stok');
+                @endphp
+
+                <!-- 4 Stat Metric Cards (rounded-xl, tabular-nums) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Card 1: Total Unit -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-[#E2E8F0] text-[#1E293B] flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center text-[#009B5D]">
+                                <span class="material-symbols-outlined text-xl">sports_tennis</span>
+                            </div>
+                            <span class="text-[11px] text-[#475569] font-bold px-2 py-0.5 rounded-md bg-slate-100">Venue</span>
                         </div>
-                        <span class="text-[11px] font-bold text-red-700 px-2 py-0.5 rounded-full bg-red-100">Perlu Servis</span>
+                        <div class="mt-3">
+                            <span class="text-xs text-[#475569] block font-semibold">Total Item Inventaris</span>
+                            <span class="text-2xl font-extrabold text-[#1E293B] font-mono tabular-nums tracking-tight">{{ number_format($totalUnit) }} Unit</span>
+                            <div class="mt-1 flex items-center gap-1 text-[11px] text-[#475569]">
+                                <span class="material-symbols-outlined text-xs text-[#009B5D]">category</span>
+                                <span>{{ $totalKategori }} Kategori ({{ $totalItem }} Model)</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-4">
-                        <span class="text-xs text-[#475569] block font-semibold">Dalam Perawatan / Rusak</span>
-                        <span class="text-2xl font-extrabold text-red-600 tracking-tight">{{ number_format($perluServis) }} Unit</span>
-                        <div class="mt-1 flex items-center gap-1 text-xs text-[#475569]">
-                            <span class="material-symbols-outlined text-sm text-red-500">handyman</span>
-                            <span>Target reparasi berkala</span>
+
+                    <!-- Card 2: Tersedia di Rak -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-[#E2E8F0] text-[#1E293B] flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center text-[#007F4B]">
+                                <span class="material-symbols-outlined text-xl">verified</span>
+                            </div>
+                            <span class="text-[11px] font-bold text-[#007F4B] px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 font-mono tabular-nums">{{ $persenTersedia }}%</span>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-xs text-[#475569] block font-semibold">Tersedia di Rak</span>
+                            <span class="text-2xl font-extrabold text-[#009B5D] font-mono tabular-nums tracking-tight">{{ number_format($tersediaUnit) }} Unit</span>
+                            <div class="mt-1 flex items-center gap-1 text-[11px] text-[#475569]">
+                                <span class="material-symbols-outlined text-xs text-[#39A845]">check_circle</span>
+                                <span>Siap digunakan di lapangan</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Sedang Disewa -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-[#E2E8F0] text-[#1E293B] flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <div class="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-[#0C2340]">
+                                <span class="material-symbols-outlined text-xl">schedule</span>
+                            </div>
+                            <span class="text-[11px] text-[#0C2340] font-bold px-2 py-0.5 rounded-md bg-slate-100">Sirkulasi</span>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-xs text-[#475569] block font-semibold">Sedang Disewa</span>
+                            <span class="text-2xl font-extrabold text-[#0C2340] font-mono tabular-nums tracking-tight">{{ number_format($sedangDisewa) }} Unit</span>
+                            <div class="mt-1 flex items-center gap-1 text-[11px] text-[#475569]">
+                                <span class="material-symbols-outlined text-xs text-[#0C2340]">sports_score</span>
+                                <span>Sedang aktif terpakai</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Dalam Perawatan -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-[#E2E8F0] text-[#1E293B] flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <div class="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+                                <span class="material-symbols-outlined text-xl">build</span>
+                            </div>
+                            <span class="text-[11px] font-bold text-red-700 px-2 py-0.5 rounded-md bg-red-50 border border-red-200">Servis</span>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-xs text-[#475569] block font-semibold">Perbaikan / Rusak</span>
+                            <span class="text-2xl font-extrabold text-red-600 font-mono tabular-nums tracking-tight">{{ number_format($perluServis) }} Unit</span>
+                            <div class="mt-1 flex items-center gap-1 text-[11px] text-[#475569]">
+                                <span class="material-symbols-outlined text-xs text-red-500">handyman</span>
+                                <span>Jadwal pemeliharaan</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- CONTENT CONTAINER -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 flex flex-col gap-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-6 flex flex-col gap-6">
 
-        <!-- SECTION 2: Filter & Action Section (Soft Ice Blue Container #E6F2F8) -->
-        <div class="bg-[#E6F2F8] rounded-2xl p-5 md:p-6 border border-[#E2E8F0] shadow-sm flex flex-col gap-4">
-            <!-- Top Row: Search & Database Badge -->
-            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-                <!-- Real-time Search Input -->
-                <div class="relative flex-1 max-w-2xl">
-                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#475569]">
-                        <span class="material-symbols-outlined text-xl">search</span>
+        <!-- SECTION 2: Toolbar Filter (Soft Ice Blue Container #E6F2F8, rounded-xl) -->
+        <div class="bg-[#E6F2F8] rounded-xl p-4 sm:p-5 border border-[#E2E8F0] shadow-sm flex flex-col gap-4">
+            <!-- Row 1: Search & Context -->
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+                <div class="relative flex-1 max-w-xl">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#475569]">
+                        <span class="material-symbols-outlined text-lg">search</span>
                     </div>
                     <input type="text"
                            id="equipmentSearchInput"
-                           class="w-full h-11 pl-11 pr-10 rounded-full bg-white text-[#1E293B] text-sm placeholder:text-[#475569]/70 border border-[#E2E8F0] focus:outline-none focus:ring-2 focus:ring-[#009B5D] shadow-sm transition-all"
+                           class="w-full h-10 pl-9 pr-8 rounded-lg bg-white text-[#1E293B] text-xs placeholder:text-[#475569]/70 border border-[#E2E8F0] focus:outline-none focus:ring-2 focus:ring-[#009B5D] transition-colors duration-150"
                            placeholder="Cari nama alat, SKU, kategori, atau kondisi..."
                            autocomplete="off">
                     <button type="button"
                             id="clearSearchBtn"
-                            class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-[#475569] hover:text-[#1E293B] hidden"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-[#475569] hover:text-[#1E293B] hidden"
                             title="Hapus pencarian">
-                        <span class="material-symbols-outlined text-lg">cancel</span>
+                        <span class="material-symbols-outlined text-base">cancel</span>
                     </button>
                 </div>
 
-                <!-- Database Status Indicator -->
                 <div class="hidden xl:flex items-center gap-2 text-xs font-semibold text-[#475569]">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#009B5D] animate-pulse"></span>
-                    <span>Database SportHub Inventaris v2.4 • Modul B</span>
+                    <span class="material-symbols-outlined text-base text-[#009B5D]">database</span>
+                    <span>Database Inventaris SportHub</span>
                 </div>
             </div>
 
-            <!-- Bottom Row: Filters Dropdown & Action CTA Buttons -->
-            <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pt-1 border-t border-[#E2E8F0]/80">
-                <!-- Filter Dropdowns Left -->
-                <div class="flex flex-wrap items-center gap-2.5">
+            <!-- Row 2: Filter Dropdowns & Admin CTA Button -->
+            <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-3 border-t border-[#E2E8F0]">
+                <div class="flex flex-wrap items-center gap-2">
                     <!-- Filter Kategori -->
                     <div class="relative">
                         <select id="categoryFilter"
-                                class="h-10 pl-3 pr-8 rounded-xl bg-white text-xs font-semibold text-[#1E293B] border border-[#E2E8F0] appearance-none focus:outline-none focus:ring-2 focus:ring-[#009B5D] cursor-pointer shadow-sm">
+                                class="h-9 pl-3 pr-8 rounded-lg bg-white text-xs font-semibold text-[#1E293B] border border-[#E2E8F0] appearance-none focus:outline-none focus:ring-2 focus:ring-[#009B5D] cursor-pointer transition-colors duration-150">
                             <option value="">Semua Kategori</option>
                             @foreach ($alatOlahraga->pluck('kategori')->filter()->unique() as $kat)
                                 <option value="{{ $kat }}">{{ $kat }}</option>
                             @endforeach
                         </select>
-                        <span class="material-symbols-outlined text-base absolute right-2.5 top-2.5 pointer-events-none text-[#475569]">expand_more</span>
+                        <span class="material-symbols-outlined text-base absolute right-2.5 top-2 pointer-events-none text-[#475569]">expand_more</span>
                     </div>
 
                     <!-- Filter Kondisi -->
                     <div class="relative">
                         <select id="conditionFilter"
-                                class="h-10 pl-3 pr-8 rounded-xl bg-white text-xs font-semibold text-[#1E293B] border border-[#E2E8F0] appearance-none focus:outline-none focus:ring-2 focus:ring-[#009B5D] cursor-pointer shadow-sm">
+                                class="h-9 pl-3 pr-8 rounded-lg bg-white text-xs font-semibold text-[#1E293B] border border-[#E2E8F0] appearance-none focus:outline-none focus:ring-2 focus:ring-[#009B5D] cursor-pointer transition-colors duration-150">
                             <option value="">Semua Kondisi</option>
                             <option value="Baru">Baru</option>
                             <option value="Sangat Baik">Sangat Baik</option>
                             <option value="Baik">Baik</option>
                             <option value="Cukup">Cukup</option>
-                            <option value="Perlu Perbaikan">Perlu Perbaikan / Rusak</option>
+                            <option value="Perlu Perbaikan">Perlu Perbaikan</option>
                         </select>
-                        <span class="material-symbols-outlined text-base absolute right-2.5 top-2.5 pointer-events-none text-[#475569]">expand_more</span>
+                        <span class="material-symbols-outlined text-base absolute right-2.5 top-2 pointer-events-none text-[#475569]">expand_more</span>
                     </div>
 
-                    <!-- Reset Filters Button -->
+                    <!-- Reset Button -->
                     <button type="button"
                             id="resetFilterBtn"
-                            class="h-10 px-3 rounded-xl bg-white hover:bg-slate-50 text-xs font-semibold text-[#475569] border border-[#E2E8F0] transition-colors flex items-center gap-1 shadow-sm">
+                            class="h-9 px-3 rounded-lg bg-white hover:bg-slate-50 text-xs font-semibold text-[#475569] border border-[#E2E8F0] transition-colors duration-150 flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">restart_alt</span>
                         <span>Reset</span>
                     </button>
                 </div>
 
-                <!-- Action CTAs Right (Tombol Tambah HANYA untuk role admin) -->
-                <div class="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
-                    @if (auth()->user()?->role === 'admin' || auth()->user()?->isAdmin())
+                <!-- Tombol Tambah: HANYA dirender jika auth()->user()->role === 'admin' -->
+                <div class="flex items-center gap-2 shrink-0 self-end md:self-auto">
+                    @if (auth()->user()?->role === 'admin')
                         <a href="{{ route('alat-olahraga.create') }}"
-                           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#009B5D] hover:bg-[#007F4B] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200">
-                            <span class="material-symbols-outlined text-xl">add_circle</span>
-                            <span>+ Tambah Data Alat Baru</span>
+                           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#009B5D] hover:bg-[#007F4B] text-white font-bold text-xs shadow-sm transition-colors duration-150">
+                            <span class="material-symbols-outlined text-base">add</span>
+                            <span>+ Tambah Alat</span>
                         </a>
                     @else
-                        <span class="text-xs text-[#475569] italic bg-white/70 px-3 py-1.5 rounded-lg border border-[#E2E8F0]">
-                            Mode Penyewa: Akses Lihat &amp; Detail Alat
+                        <span class="text-xs text-[#475569] bg-white px-2.5 py-1.5 rounded-md border border-[#E2E8F0]">
+                            Mode Penyewa (Akses Katalog)
                         </span>
                     @endif
                 </div>
             </div>
         </div>
 
-        <!-- SECTION 3: View Switcher & Controls Header -->
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <!-- View Switcher Tabs (Grid vs Table) -->
-            <div class="flex items-center gap-1 bg-[#F1F5F9] p-1 rounded-xl border border-[#E2E8F0]">
+        <!-- SECTION 3: Switcher & Header Controls -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <!-- View Switcher -->
+            <div class="flex items-center gap-1 bg-[#F1F5F9] p-1 rounded-lg border border-[#E2E8F0]">
                 <button type="button"
                         id="viewGridBtn"
-                        class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white text-[#009B5D] text-xs font-bold shadow-sm transition-all">
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-[#009B5D] text-xs font-bold shadow-sm transition-colors duration-150">
                     <span class="material-symbols-outlined text-base">grid_view</span>
-                    <span>Tampilan Kartu Grid</span>
+                    <span>Tampilan Kartu</span>
                 </button>
                 <button type="button"
                         id="viewTableBtn"
-                        class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[#475569] text-xs font-semibold hover:text-[#1E293B] transition-all">
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[#475569] text-xs font-semibold hover:text-[#1E293B] transition-colors duration-150">
                     <span class="material-symbols-outlined text-base">table_rows</span>
-                    <span>Tampilan Tabel Data</span>
+                    <span>Tampilan Tabel</span>
                 </button>
             </div>
 
-            <!-- Sorting & Item Counter -->
+            <!-- Sorting & Counter -->
             <div class="flex items-center gap-3 self-end sm:self-auto">
                 <span class="text-xs text-[#475569] hidden md:inline">
-                    Menampilkan <strong id="displayedCount" class="text-[#1E293B]">{{ $alatOlahraga->count() }}</strong> alat
+                    Menampilkan <strong id="displayedCount" class="text-[#1E293B] font-mono tabular-nums">{{ $alatOlahraga->count() }}</strong> alat
                 </span>
                 <div class="relative">
                     <select id="sortSelect"
-                            class="h-9 pl-3 pr-7 rounded-lg bg-white text-xs font-semibold text-[#1E293B] border border-[#E2E8F0] appearance-none focus:outline-none cursor-pointer shadow-sm">
-                        <option value="name_asc">Urutkan: Nama (A - Z)</option>
-                        <option value="name_desc">Urutkan: Nama (Z - A)</option>
-                        <option value="stock_desc">Stok Tersedia Terbanyak</option>
-                        <option value="price_asc">Tarif: Rendah ke Tinggi</option>
-                        <option value="price_desc">Tarif: Tinggi ke Rendah</option>
+                            class="h-8 pl-2.5 pr-7 rounded-lg bg-white text-xs font-semibold text-[#1E293B] border border-[#E2E8F0] appearance-none focus:outline-none cursor-pointer">
+                        <option value="name_asc">Nama (A - Z)</option>
+                        <option value="name_desc">Nama (Z - A)</option>
+                        <option value="stock_desc">Stok Terbanyak</option>
+                        <option value="price_asc">Tarif Termurah</option>
+                        <option value="price_desc">Tarif Termahal</option>
                     </select>
-                    <span class="material-symbols-outlined text-sm absolute right-2 top-2.5 pointer-events-none text-[#475569]">expand_more</span>
+                    <span class="material-symbols-outlined text-sm absolute right-2 top-2 pointer-events-none text-[#475569]">expand_more</span>
                 </div>
             </div>
         </div>
 
-        <!-- SECTION 4: 4-COLUMN CARD GRID VIEW (Default Active) -->
-        <div id="gridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- SECTION 4: GRID VIEW (Default Active) -->
+        <div id="gridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @forelse ($alatOlahraga as $item)
                 @php
                     $kLower = strtolower($item->kondisi);
                     $katLower = strtolower($item->kategori);
 
-                    // Category icons & styling
                     $categoryIcon = 'sports';
                     if (str_contains($katLower, 'badminton') || str_contains($katLower, 'tangkis')) {
                         $categoryIcon = 'sports_tennis';
@@ -281,17 +271,15 @@
                         $categoryIcon = 'sports_baseball';
                     } elseif (str_contains($katLower, 'gym') || str_contains($katLower, 'fitness')) {
                         $categoryIcon = 'fitness_center';
-                    } elseif (str_contains($katLower, 'renang') || str_contains($katLower, 'air')) {
+                    } elseif (str_contains($katLower, 'renang')) {
                         $categoryIcon = 'pool';
                     }
 
-                    // Stock status
                     $isAvailable = $item->stok > 3 && !str_contains($kLower, 'rusak');
                     $isLowStock = $item->stok > 0 && $item->stok <= 3 && !str_contains($kLower, 'rusak');
-                    $isOutOfStock = $item->stok == 0 || str_contains($kLower, 'rusak');
                 @endphp
 
-                <div class="equipment-card group bg-white rounded-2xl shadow-sm hover:shadow-xl border border-[#E2E8F0] transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                <div class="equipment-card bg-white rounded-xl shadow-sm hover:shadow-md border border-[#E2E8F0] transition-shadow duration-150 flex flex-col justify-between overflow-hidden"
                      data-name="{{ strtolower($item->nama_alat) }}"
                      data-sku="spt-{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}"
                      data-category="{{ $item->kategori }}"
@@ -300,135 +288,102 @@
                      data-stock="{{ $item->stok }}">
 
                     <div>
-                        <!-- Visual Header & Badges -->
-                        <div class="relative h-44 w-full bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden flex items-center justify-center">
-                            <!-- Background Athletic Graphic Icon -->
-                            <div class="absolute inset-0 flex items-center justify-center opacity-15 text-slate-500 group-hover:scale-110 group-hover:opacity-25 transition-all duration-500">
-                                <span class="material-symbols-outlined text-9xl">{{ $categoryIcon }}</span>
-                            </div>
+                        <!-- Header Box with Icon Placeholder -->
+                        <div class="relative h-36 w-full bg-[#F8FAFC] border-b border-[#E2E8F0] flex items-center justify-center">
+                            <span class="material-symbols-outlined text-6xl text-slate-300">{{ $categoryIcon }}</span>
 
-                            <!-- Top Left: Stock Status Badge -->
-                            <div class="absolute top-3 left-3 flex flex-col gap-1 z-10">
+                            <!-- Status Badge (rounded-md, no decorative dot) -->
+                            <div class="absolute top-2.5 left-2.5">
                                 @if ($isAvailable)
-                                    <span class="px-2.5 py-1 rounded-full bg-[#009B5D] text-white text-[11px] font-bold shadow-sm flex items-center gap-1.5">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-[#80fab2]"></span>
-                                        <span>Tersedia</span>
+                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-[#007F4B] text-[11px] font-bold border border-emerald-200">
+                                        Tersedia
                                     </span>
                                 @elseif ($isLowStock)
-                                    <span class="px-2.5 py-1 rounded-full bg-amber-500 text-white text-[11px] font-bold shadow-sm flex items-center gap-1.5">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                                        <span>Stok Terbatas</span>
+                                    <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+                                        Stok Menipis
                                     </span>
                                 @else
-                                    <span class="px-2.5 py-1 rounded-full bg-red-600 text-white text-[11px] font-bold shadow-sm flex items-center gap-1.5">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                                        <span>{{ str_contains($kLower, 'rusak') ? 'Perlu Servis' : 'Habis' }}</span>
+                                    <span class="px-2 py-0.5 rounded-md bg-red-50 text-red-600 text-[11px] font-bold border border-red-200">
+                                        {{ str_contains($kLower, 'rusak') ? 'Perlu Servis' : 'Habis' }}
                                     </span>
                                 @endif
                             </div>
 
-                            <!-- Top Right: Rating / Status Pill -->
-                            <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-0.5 rounded-md text-[11px] font-semibold text-[#1E293B] flex items-center gap-1 shadow-sm z-10">
-                                <span class="material-symbols-outlined text-amber-500 text-xs material-symbols-fill">star</span>
-                                <span>4.8 ({{ 25 + ($item->id * 7) }} Sewa)</span>
-                            </div>
-
-                            <!-- Bottom Left: Locker Placement Info -->
-                            <div class="absolute bottom-2 left-3 px-2 py-0.5 rounded bg-[#0C2340]/80 backdrop-blur text-white text-[11px] font-medium z-10">
-                                Loker: Rak {{ chr(65 + ($item->id % 6)) }}-0{{ ($item->id % 9) + 1 }}
+                            <!-- Placement Info -->
+                            <div class="absolute bottom-2 right-2.5 text-[10px] text-[#475569] font-mono tabular-nums bg-white px-2 py-0.5 rounded-md border border-[#E2E8F0]">
+                                Rak {{ chr(65 + ($item->id % 6)) }}-0{{ ($item->id % 9) + 1 }}
                             </div>
                         </div>
 
-                        <!-- Card Body Info -->
-                        <div class="p-5 flex flex-col gap-2">
+                        <!-- Card Content -->
+                        <div class="p-4 flex flex-col gap-2">
                             <div class="flex items-center justify-between text-[#475569] text-xs">
-                                <span class="font-mono font-medium">SKU: SPT-{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}</span>
-                                <span class="px-2 py-0.5 rounded-md bg-[#F1F5F9] text-[#1E293B] font-semibold text-[11px]">
+                                <span class="font-mono tabular-nums text-[11px] font-semibold text-slate-500">SKU: SPT-{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}</span>
+                                <span class="px-2 py-0.5 rounded-md bg-[#F1F5F9] text-[#1E293B] text-[11px] font-medium">
                                     {{ $item->kategori }}
                                 </span>
                             </div>
 
-                            <h3 class="text-base font-bold text-[#1E293B] group-hover:text-[#009B5D] transition-colors leading-snug line-clamp-1" title="{{ $item->nama_alat }}">
+                            <h3 class="text-sm font-bold text-[#1E293B] line-clamp-1" title="{{ $item->nama_alat }}">
                                 {{ $item->nama_alat }}
                             </h3>
 
-                            <div class="flex items-baseline gap-1 mt-1">
-                                <span class="text-lg font-extrabold text-[#009B5D]">
+                            <div class="flex items-baseline gap-1 mt-0.5">
+                                <span class="text-base font-bold text-[#009B5D] font-mono tabular-nums">
                                     Rp {{ number_format($item->tarif_sewa, 0, ',', '.') }}
                                 </span>
                                 <span class="text-xs text-[#475569]">/ hari</span>
                             </div>
 
-                            <!-- Inventory Meter Bar -->
-                            <div class="mt-2 pt-2 border-t border-[#F1F5F9] flex flex-col gap-1">
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-[#1E293B] font-medium">Stok: {{ $item->stok }} Unit</span>
-                                    <span class="text-[#475569] text-[11px]">{{ $item->kondisi }}</span>
-                                </div>
-                                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                    @php
-                                        $barWidth = min(100, max(10, $item->stok * 10));
-                                        $barColor = $item->stok > 3 ? 'bg-[#009B5D]' : ($item->stok > 0 ? 'bg-amber-500' : 'bg-red-500');
-                                    @endphp
-                                    <div class="h-full {{ $barColor }} rounded-full" style="width: {{ $barWidth }}%;"></div>
-                                </div>
+                            <div class="mt-2 pt-2 border-t border-[#F1F5F9] flex items-center justify-between text-xs text-[#475569]">
+                                <span>Stok: <strong class="text-[#1E293B] font-mono tabular-nums">{{ $item->stok }}</strong> Unit</span>
+                                <span class="text-[11px]">{{ $item->kondisi }}</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Footer Actions: Role-based button rendering -->
-                    <div class="p-5 pt-0 bg-white flex items-center gap-2 mt-2">
-                        <!-- Button Detail (Untuk Semua Role) -->
+                    <!-- Footer Actions: Role-based rendering -->
+                    <div class="p-4 pt-0 flex items-center gap-1.5 mt-2">
+                        <!-- Tombol Detail (Untuk semua role) -->
                         <a href="{{ route('alat-olahraga.show', $item->id) }}"
-                           class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#475569] hover:text-[#1E293B] transition-colors shadow-sm flex items-center justify-center"
-                           title="Lihat Detail Alat">
-                            <span class="material-symbols-outlined text-lg">visibility</span>
+                           class="flex-1 py-1.5 px-3 rounded-lg bg-[#F8FAFC] hover:bg-slate-100 text-[#1E293B] border border-[#E2E8F0] text-xs font-semibold text-center transition-colors duration-150 flex items-center justify-center gap-1">
+                            <span class="material-symbols-outlined text-sm">visibility</span>
+                            <span>Detail</span>
                         </a>
 
-                        @if (auth()->user()?->role === 'admin' || auth()->user()?->isAdmin())
-                            <!-- Button Edit (Khusus Admin) -->
+                        @if (auth()->user()?->role === 'admin')
+                            <!-- Tombol Edit (Hanya Admin) -->
                             <a href="{{ route('alat-olahraga.edit', $item->id) }}"
-                               class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 transition-colors shadow-sm flex items-center justify-center"
-                               title="Edit Data Alat">
-                                <span class="material-symbols-outlined text-lg">edit</span>
+                               class="p-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 transition-colors duration-150 flex items-center justify-center"
+                               title="Edit Alat">
+                                <span class="material-symbols-outlined text-base">edit</span>
                             </a>
 
-                            <!-- Button Hapus (Khusus Admin) -->
+                            <!-- Tombol Hapus (Hanya Admin) -->
                             <form action="{{ route('alat-olahraga.destroy', $item->id) }}"
                                   method="POST"
                                   class="inline m-0"
-                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus alat olahraga &quot;{{ $item->nama_alat }}&quot;?');">
+                                  onsubmit="return confirm('Hapus alat olahraga &quot;{{ $item->nama_alat }}&quot;?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                        class="p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors shadow-sm flex items-center justify-center"
-                                        title="Hapus Data Alat">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                        class="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-colors duration-150 flex items-center justify-center"
+                                        title="Hapus Alat">
+                                    <span class="material-symbols-outlined text-base">delete</span>
                                 </button>
                             </form>
                         @endif
-
-                        <!-- Action CTA -->
-                        <a href="{{ route('alat-olahraga.show', $item->id) }}"
-                           class="flex-1 py-2 px-3 rounded-xl bg-[#009B5D] hover:bg-[#007F4B] text-white text-xs font-bold text-center transition-all flex items-center justify-center gap-1 shadow-sm">
-                            <span class="material-symbols-outlined text-base">shopping_bag</span>
-                            <span>{{ auth()->user()?->isAdmin() ? 'Kelola Unit' : 'Sewa Alat' }}</span>
-                        </a>
                     </div>
                 </div>
             @empty
-                <div class="col-span-full py-12 text-center bg-white rounded-2xl border border-[#E2E8F0] p-8 shadow-sm">
-                    <div class="w-16 h-16 rounded-2xl bg-emerald-50 text-[#009B5D] flex items-center justify-center mx-auto mb-3">
-                        <span class="material-symbols-outlined text-3xl">inventory_2</span>
-                    </div>
-                    <h3 class="text-base font-bold text-[#1E293B]">Belum Ada Data Alat Olahraga</h3>
-                    <p class="text-xs text-[#475569] mt-1 max-w-sm mx-auto">
-                        Inventaris peralatan masih kosong. Tambahkan item peralatan baru untuk memulai sirkulasi rental.
-                    </p>
-                    @if (auth()->user()?->role === 'admin' || auth()->user()?->isAdmin())
+                <div class="col-span-full py-12 text-center bg-white rounded-xl border border-[#E2E8F0] p-6 shadow-sm">
+                    <span class="material-symbols-outlined text-4xl text-slate-400 mb-2">inventory_2</span>
+                    <h3 class="text-sm font-bold text-[#1E293B]">Belum Ada Data Alat Olahraga</h3>
+                    <p class="text-xs text-[#475569] mt-1">Data peralatan inventaris masih kosong.</p>
+                    @if (auth()->user()?->role === 'admin')
                         <a href="{{ route('alat-olahraga.create') }}"
-                           class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#009B5D] hover:bg-[#007F4B] text-white text-xs font-bold shadow-md transition-all">
-                            <span class="material-symbols-outlined text-base">add_circle</span>
+                           class="mt-3 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#009B5D] hover:bg-[#007F4B] text-white text-xs font-bold transition-colors duration-150">
+                            <span class="material-symbols-outlined text-sm">add</span>
                             <span>+ Tambah Alat Sekarang</span>
                         </a>
                     @endif
@@ -436,24 +391,24 @@
             @endforelse
         </div>
 
-        <!-- SECTION 5: CLEAN TABLE VIEW (Hidden by Default, Toggled via Switcher) -->
-        <div id="tableContainer" class="hidden bg-white rounded-2xl shadow-sm border border-[#E2E8F0] overflow-hidden">
+        <!-- SECTION 5: TABLE VIEW (Toggled via Switcher) -->
+        <div id="tableContainer" class="hidden bg-white rounded-xl shadow-sm border border-[#E2E8F0] overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
                         <tr class="bg-[#F8FAFC] border-b border-[#E2E8F0] text-[#475569] font-bold uppercase tracking-wider text-[11px]">
-                            <th class="py-3.5 px-4 text-center w-12">#</th>
-                            <th class="py-3.5 px-4">Nama Alat &amp; SKU</th>
-                            <th class="py-3.5 px-4">Kategori</th>
-                            <th class="py-3.5 px-4">Kondisi</th>
-                            <th class="py-3.5 px-4">Tarif Sewa</th>
-                            <th class="py-3.5 px-4 text-center">Stok</th>
-                            <th class="py-3.5 px-4 text-center w-36">Aksi</th>
+                            <th class="py-3 px-4 text-center w-12">#</th>
+                            <th class="py-3 px-4">Nama Alat &amp; SKU</th>
+                            <th class="py-3 px-4">Kategori</th>
+                            <th class="py-3 px-4">Kondisi</th>
+                            <th class="py-3 px-4">Tarif Sewa</th>
+                            <th class="py-3 px-4 text-center">Stok</th>
+                            <th class="py-3 px-4 text-center w-28">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-[#E2E8F0] text-[#1E293B]">
                         @forelse ($alatOlahraga as $index => $item)
-                            <tr class="table-row-item hover:bg-slate-50/80 transition-colors"
+                            <tr class="table-row-item hover:bg-slate-50 transition-colors duration-150"
                                 data-name="{{ strtolower($item->nama_alat) }}"
                                 data-sku="spt-{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}"
                                 data-category="{{ $item->kategori }}"
@@ -461,80 +416,57 @@
                                 data-price="{{ $item->tarif_sewa }}"
                                 data-stock="{{ $item->stok }}">
 
-                                <td class="py-3.5 px-4 text-center text-[#475569] font-mono">
+                                <td class="py-3 px-4 text-center text-[#475569] font-mono tabular-nums">
                                     {{ $index + 1 }}
                                 </td>
-                                <td class="py-3.5 px-4">
-                                    <div class="font-bold text-[#1E293B] text-sm">{{ $item->nama_alat }}</div>
-                                    <span class="text-[11px] text-[#475569] font-mono">SKU: SPT-{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}</span>
+                                <td class="py-3 px-4">
+                                    <div class="font-bold text-[#1E293B]">{{ $item->nama_alat }}</div>
+                                    <span class="text-[11px] text-[#475569] font-mono tabular-nums">SKU: SPT-{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}</span>
                                 </td>
-                                <td class="py-3.5 px-4">
-                                    <span class="px-2.5 py-1 rounded-md bg-[#F1F5F9] text-[#1E293B] font-semibold text-[11px] inline-flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-xs text-[#009B5D]">label</span>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-0.5 rounded-md bg-[#F1F5F9] text-[#1E293B] text-[11px]">
                                         {{ $item->kategori }}
                                     </span>
                                 </td>
-                                <td class="py-3.5 px-4">
-                                    @php
-                                        $kL = strtolower($item->kondisi);
-                                        $kBadge = 'bg-slate-100 text-[#475569]';
-                                        if (str_contains($kL, 'baru') || str_contains($kL, 'sangat baik') || str_contains($kL, 'baik')) {
-                                            $kBadge = 'bg-emerald-50 text-[#007F4B] border border-emerald-200';
-                                        } elseif (str_contains($kL, 'cukup')) {
-                                            $kBadge = 'bg-amber-50 text-amber-700 border border-amber-200';
-                                        } elseif (str_contains($kL, 'rusak') || str_contains($kL, 'perbaikan')) {
-                                            $kBadge = 'bg-red-50 text-red-700 border border-red-200';
-                                        }
-                                    @endphp
-                                    <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold {{ $kBadge }}">
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-[#475569]">
                                         {{ $item->kondisi }}
                                     </span>
                                 </td>
-                                <td class="py-3.5 px-4">
-                                    <span class="font-bold text-[#009B5D] text-sm">
+                                <td class="py-3 px-4 font-mono tabular-nums">
+                                    <span class="font-bold text-[#009B5D]">
                                         Rp {{ number_format($item->tarif_sewa, 0, ',', '.') }}
                                     </span>
                                     <span class="text-[11px] text-[#475569]">/ hari</span>
                                 </td>
-                                <td class="py-3.5 px-4 text-center">
-                                    @if ($item->stok > 0)
-                                        <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-[#007F4B] font-bold text-xs">
-                                            {{ $item->stok }} Unit
-                                        </span>
-                                    @else
-                                        <span class="px-2.5 py-1 rounded-full bg-red-100 text-red-700 font-bold text-xs">
-                                            Habis
-                                        </span>
-                                    @endif
+                                <td class="py-3 px-4 text-center font-mono tabular-nums font-semibold">
+                                    {{ $item->stok }} Unit
                                 </td>
-                                <td class="py-3.5 px-4 text-center">
-                                    <div class="inline-flex items-center gap-1.5 justify-center">
-                                        <!-- Detail -->
+                                <td class="py-3 px-4 text-center">
+                                    <div class="inline-flex items-center gap-1">
                                         <a href="{{ route('alat-olahraga.show', $item->id) }}"
-                                           class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-[#475569] transition-colors"
+                                           class="p-1 rounded-md bg-slate-100 hover:bg-slate-200 text-[#475569] transition-colors duration-150"
                                            title="Detail Alat">
-                                            <span class="material-symbols-outlined text-base">visibility</span>
+                                            <span class="material-symbols-outlined text-sm">visibility</span>
                                         </a>
 
-                                        @if (auth()->user()?->role === 'admin' || auth()->user()?->isAdmin())
-                                            <!-- Edit -->
+                                        @if (auth()->user()?->role === 'admin')
                                             <a href="{{ route('alat-olahraga.edit', $item->id) }}"
-                                               class="p-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 transition-colors"
+                                               class="p-1 rounded-md bg-amber-50 hover:bg-amber-100 text-amber-700 transition-colors duration-150 border border-amber-200"
                                                title="Edit Alat">
-                                                <span class="material-symbols-outlined text-base">edit</span>
+                                                <span class="material-symbols-outlined text-sm">edit</span>
                                             </a>
 
-                                            <!-- Hapus -->
                                             <form action="{{ route('alat-olahraga.destroy', $item->id) }}"
                                                   method="POST"
                                                   class="inline m-0"
-                                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus alat olahraga &quot;{{ $item->nama_alat }}&quot;?');">
+                                                  onsubmit="return confirm('Hapus alat olahraga &quot;{{ $item->nama_alat }}&quot;?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                        class="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+                                                        class="p-1 rounded-md bg-red-50 hover:bg-red-100 text-red-600 transition-colors duration-150 border border-red-200"
                                                         title="Hapus Alat">
-                                                    <span class="material-symbols-outlined text-base">delete</span>
+                                                    <span class="material-symbols-outlined text-sm">delete</span>
                                                 </button>
                                             </form>
                                         @endif
@@ -543,7 +475,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-8 text-[#475569]">
+                                <td colspan="7" class="text-center py-6 text-[#475569]">
                                     Belum ada data alat olahraga.
                                 </td>
                             </tr>
@@ -553,17 +485,16 @@
             </div>
         </div>
 
-        <!-- No Results Fallback for Live Search -->
-        <div id="noSearchResults" class="hidden bg-white rounded-2xl border border-[#E2E8F0] p-10 text-center shadow-sm">
-            <span class="material-symbols-outlined text-4xl text-[#475569] mb-2">search_off</span>
-            <h3 class="text-base font-bold text-[#1E293B]">Tidak Menemukan Hasil Pencarian</h3>
-            <p class="text-xs text-[#475569] mt-1">Coba gunakan kata kunci lain atau bersihkan filter.</p>
+        <!-- No Results Fallback -->
+        <div id="noSearchResults" class="hidden bg-white rounded-xl border border-[#E2E8F0] p-8 text-center shadow-sm">
+            <span class="material-symbols-outlined text-3xl text-slate-400 mb-1">search_off</span>
+            <h3 class="text-sm font-bold text-[#1E293B]">Tidak Menemukan Hasil</h3>
+            <p class="text-xs text-[#475569] mt-0.5">Silakan gunakan kata kunci lain atau bersihkan filter.</p>
         </div>
 
     </div>
 </div>
 
-<!-- Interactive Client-side Script: Instant Search, Category Filter, Sorting & View Toggle -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const gridBtn = document.getElementById('viewGridBtn');
@@ -599,7 +530,7 @@
             gridBtn.classList.add('text-[#475569]', 'font-semibold');
         });
 
-        // Search & Filter execution
+        // Search & Filter
         function filterItems() {
             const query = (searchInput.value || '').trim().toLowerCase();
             const selectedCategory = categoryFilter.value.trim().toLowerCase();

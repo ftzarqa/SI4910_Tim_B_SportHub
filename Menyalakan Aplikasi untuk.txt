@@ -1,0 +1,19 @@
+Menyalakan Aplikasi untuk Demo:
+Buka terminal di direktori proyek dan jalankan satu perintah ini:
+Bash
+
+cd ~/Project_PHP/Laravel_Project/Modul_Rental_Dan_Olahraga && ./start-dev.sh
+
+Tunggu hingga muncul pesan Server SportHub siap diakses di: http://localhost:8080/login, lalu buka tautan tersebut di browser.
+
+Jika Ada Update Hasil Merge Modul Rekan Kelompok (git pull):
+Setelah menggabungkan PR milik Individu A (/lapangan), C (/member), atau D (/instruktur), jalankan perintah berikut agar migrasi tabel baru dan seeder tim langsung masuk ke sporthub_db:
+Bash
+
+./vendor/bin/sail artisan migrate:fresh --seed
+
+Akun Demo Siap Pakai:
+
+    Admin (Akses penuh CRUD): admin@gmail.com / admin123
+
+    User Biasa (Akses baca & validasi 404 pada rute mutasi): user@gmail.com / user123

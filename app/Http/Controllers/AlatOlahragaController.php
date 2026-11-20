@@ -30,7 +30,7 @@ class AlatOlahragaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_alat'  => 'required',
             'kategori'   => 'required',
             'kondisi'    => 'required',
@@ -38,7 +38,7 @@ class AlatOlahragaController extends Controller
             'stok'       => 'required|numeric',
         ]);
 
-        AlatOlahraga::create($request->all());
+        AlatOlahraga::create($validated);
 
         return redirect()->route('alat-olahraga.index')
             ->with('success', 'Data alat olahraga LANCAR ditambahkan!');
@@ -69,7 +69,7 @@ class AlatOlahragaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_alat'  => 'required',
             'kategori'   => 'required',
             'kondisi'    => 'required',
@@ -78,7 +78,7 @@ class AlatOlahragaController extends Controller
         ]);
 
         $alatOlahraga = AlatOlahraga::findOrFail($id);
-        $alatOlahraga->update($request->all());
+        $alatOlahraga->update($validated);
 
         return redirect()->route('alat-olahraga.index')
             ->with('success', 'Data alat olahraga LANCAR diperbarui!');
