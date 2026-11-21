@@ -159,7 +159,7 @@
 
                 <!-- Tombol Tambah: HANYA dirender jika auth()->user()->role === 'admin' -->
                 <div class="flex items-center gap-2 shrink-0 self-end md:self-auto">
-                    @if (auth()->user()?->role === 'admin')
+                    @if (auth()->user()?->role === 'member')
                         <a href="{{ route('alat-olahraga.create') }}"
                            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#009B5D] hover:bg-[#007F4B] text-white font-bold text-xs shadow-sm transition-colors duration-150">
                             <span class="material-symbols-outlined text-base">add</span>
@@ -335,7 +335,7 @@
                     <span class="material-symbols-outlined text-4xl text-slate-400 mb-2">inventory_2</span>
                     <h3 class="text-sm font-bold text-[#1E293B]">Belum Ada Data Alat Olahraga</h3>
                     <p class="text-xs text-[#475569] mt-1">Data peralatan inventaris masih kosong.</p>
-                    @if (auth()->user()?->role === 'admin')
+                    @if (auth()->user()?->role === 'member')
                         <a href="{{ route('alat-olahraga.create') }}"
                            class="mt-3 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#009B5D] hover:bg-[#007F4B] text-white text-xs font-bold transition-colors duration-150">
                             <span class="material-symbols-outlined text-sm">add</span>
@@ -405,7 +405,7 @@
                                             <span class="material-symbols-outlined text-sm">visibility</span>
                                         </a>
 
-                                        @if (auth()->user()?->role === 'admin')
+                                        @if (auth()->user()?->role === 'member')
                                             <a href="{{ route('alat-olahraga.edit', $item->id) }}"
                                                class="p-1 rounded-md bg-amber-50 hover:bg-amber-100 text-amber-700 transition-colors duration-150 border border-amber-200"
                                                title="Edit Alat">

@@ -13,9 +13,6 @@
                     <span class="material-symbols-outlined text-2xl">stadium</span>
                 </div>
                 <h1 class="text-xl font-extrabold text-white tracking-tight">SportHub</h1>
-                <p class="text-xs text-slate-300 mt-1">
-                    Sistem Manajemen Venue &amp; Rental Olahraga
-                </p>
             </div>
 
             <!-- Card Body -->
@@ -23,7 +20,7 @@
                 <div class="mb-5 text-center">
                     <h2 class="text-lg font-bold text-[#1E293B]">Masuk ke Sistem</h2>
                     <p class="text-xs text-[#475569] mt-0.5">
-                        Masukkan kredensial akun Anda untuk mengakses fasilitas
+                        gabisa masuk yahahaha
                     </p>
                 </div>
 
@@ -120,7 +117,6 @@
                     <div class="rounded-lg bg-[#E6F2F8] border border-[#E2E8F0] p-3.5 text-xs text-[#1E293B]">
                         <div class="flex items-center gap-1.5 font-bold text-[#0C2340] mb-2">
                             <span class="material-symbols-outlined text-base text-[#009B5D]">key</span>
-                            <span>Akun Demo Siap Pakai:</span>
                         </div>
                         <div class="space-y-2 font-mono">
                             <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-[#E2E8F0]">
