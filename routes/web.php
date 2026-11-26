@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlatOlahragaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LapanganController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,10 +42,17 @@ Route::middleware('auth')->group(function () {
     // === END MODUL INDIVIDU B: RENTAL ALAT OLAHRAGA ===
 
     // === ROUTE FALLBACK / PLACEHOLDER LINTAS MODUL (A, C, D) ===
-    Route::get('/lapangan', function () {
-        return view('placeholders.lapangan');
-    })->name('lapangan.index');
+    // === MODUL INDIVIDU A: CRUD LAPANGAN ===
+    Route::get('/lapangan', [LapanganController::class, 'index'])->name('lapangan.index');
 
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/lapangan/create', [LapanganController::class, 'create'])->name('lapangan.create');
+        Route::post('/lapangan', [LapanganController::class, 'store'])->name('lapangan.store');
+        Route::get('/lapangan/{id}/edit', [LapanganController::class, 'edit'])->name('lapangan.edit');
+        Route::put('/lapangan/{id}', [LapanganController::class, 'update'])->name('lapangan.update');
+        Route::delete('/lapangan/{id}', [LapanganController::class, 'destroy'])->name('lapangan.destroy');
+    });
+// === END MODUL INDIVIDU A ===
     Route::get('/member', function () {
         return view('placeholders.member');
     })->name('member.index');
