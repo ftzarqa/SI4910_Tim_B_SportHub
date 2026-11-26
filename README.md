@@ -1,7 +1,7 @@
 ## Fork Repository
 
 1. Buka repository utama:
-   https://github.com/UserHan9/Sistem-Informasi-Rental-Mobil
+   https://github.com/ftzarqa/SI4910_Tim_B_SportHub.git
 2. Klik tombol **Fork** di bagian kanan atas.
 3. Pilih akun GitHub yang akan digunakan.
 4. Tunggu hingga proses fork selesai.
@@ -12,13 +12,13 @@
 Setelah melakukan fork, clone repository hasil fork:
 
 ```bash
-git clone git@github.com:USERNAME/Sistem-Informasi-Rental-Mobil.git
+git clone git@github.com:USERNAME/SI4910_Tim_B_SportHub.git
 ```
 
 Masuk ke direktori project:
 
 ```bash
-cd Sistem-Informasi-Rental-Mobil
+cd SI4910_Tim_B_SportHub
 ```
 
 > Ganti `USERNAME` dengan username GitHub.
@@ -52,7 +52,7 @@ php artisan key:generate
 Buat database MySQL:
 
 ```sql
-CREATE DATABASE rental_mobil;
+CREATE DATABASE alat_olahraga;
 ```
 
 Sesuaikan konfigurasi database pada file `.env`:
@@ -172,7 +172,7 @@ Pastikan `origin` mengarah ke repository fork milik local.
 Tambahkan repository utama sebagai `upstream`:
 
 ```bash
-git remote add upstream git@github.com:UserHan9/Sistem-Informasi-Rental-Mobil.git
+git remote add upstream git@github.com:ftzarqa/SI4910_Tim_B_SportHub.git
 ```
 
 Periksa kembali:
@@ -184,8 +184,8 @@ git remote -v
 Contoh hasil:
 
 ```text
-origin    git@github.com:USERNAME/Sistem-Informasi-Rental-Mobil.git
-upstream  git@github.com:UserHan9/Sistem-Informasi-Rental-Mobil.git
+origin    git@github.com:USERNAME/SI4910_Tim_B_SportHub.git
+upstream  git@github.com:ftzarqa/SI4910_Tim_B_SportHub.git
 ```
 
 ## 2. Sinkronisasi Repository
@@ -369,13 +369,13 @@ Setiap anggota wajib menggunakan branch yang berbeda agar perubahan kode tidak s
 Clone repository utama:
 
 ```bash
-git clone git@github.com:UserHan9/Sistem-Informasi-Rental-Mobil.git
+git clone git@github.com:ftzarqa/SI4910_Tim_B_SportHub.git
 ```
 
 Masuk ke direktori project:
 
 ```bash
-cd Sistem-Informasi-Rental-Mobil
+cd SI4910_Tim_B_SportHub
 ```
 
 ## 2. Sinkronisasi Repository
@@ -402,10 +402,12 @@ Contoh pembagian branch:
 | Contributor | Branch |
 |---|---|
 | Anggota 1 | `feature/login` |
-| Anggota 2 | `feature/register` |
-| Anggota 3 | `feature/dashboard` |
-| Anggota 4 | `feature/rental` |
-| Anggota 5 | `feature/vehicle` |
+| Anggota 1 | `feature/register` |
+| Anggota 2 | `feature/dashboard` |
+| Anggota 1 | `feature/lapangan` |
+| Anggota 2 | `feature/alat` |
+| Anggota 3 | `feature/member` |
+| Anggota 4 | `feature/coach` |
 
 Contoh prefix branch:
 
@@ -473,19 +475,19 @@ git push -u origin feature/register
 Anggota 3:
 
 ```bash
-git push -u origin feature/dashboard
+git push -u origin feature/member
 ```
 
 Anggota 4:
 
 ```bash
-git push -u origin feature/rental
+git push -u origin feature/coach
 ```
 
-Anggota 5:
+Anggota 2:
 
 ```bash
-git push -u origin feature/vehicle
+git push -u origin feature/alat
 ```
 
 Setelah push berhasil, perubahan akan tersimpan pada branch masing-masing di GitHub dan tidak langsung mengubah branch `main`.
