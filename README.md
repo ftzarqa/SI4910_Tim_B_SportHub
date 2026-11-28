@@ -1,575 +1,167 @@
-## Fork Repository
+# SportHub — Sistem Manajemen Venue & Lapangan Olahraga
 
-1. Buka repository utama:
-   https://github.com/ftzarqa/SI4910_Tim_B_SportHub.git
-2. Klik tombol **Fork** di bagian kanan atas.
-3. Pilih akun GitHub yang akan digunakan.
-4. Tunggu hingga proses fork selesai.
-5. Repository akan tersalin ke akun GitHub kamu.
+Aplikasi web berbasis Laravel untuk pengelolaan venue olahraga terpadu yang mencakup **Manajemen Lapangan & Area**, **Rental Alat Olahraga**, **Manajemen Pelanggan & Member**, serta **Direktori Instruktur & Coach**.
 
-## Clone Repository
-
-Setelah melakukan fork, clone repository hasil fork:
-
-```bash
-git clone git@github.com:USERNAME/SI4910_Tim_B_SportHub.git
-```
-
-Masuk ke direktori project:
-
-```bash
-cd SI4910_Tim_B_SportHub
-```
-
-> Ganti `USERNAME` dengan username GitHub.
-
-## Instalasi dan Konfigurasi Laravel
-
-### 1. Install Dependency
-
-Install dependency Laravel menggunakan Composer:
-
-```bash
-composer install
-```
-
-### 2. Konfigurasi Environment
-
-Salin file `.env.example` menjadi `.env`:
-
-```cmd
-copy .env.example .env
-```
-
-### 3. Generate Application Key
-
-```bash
-php artisan key:generate
-```
-
-### 4. Konfigurasi Database
-
-Buat database MySQL:
-
-```sql
-CREATE DATABASE alat_olahraga;
-```
-
-Sesuaikan konfigurasi database pada file `.env`:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=rental_mobil
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-### 5. Migration dan Seeder
-
-Jalankan migration:
-
-```bash
-php artisan migrate
-```
-
-Jalankan seeder untuk memasukkan data awal:
-
-```bash
-php artisan db:seed
-```
-
-### 6. Install Dependency Frontend
-
-```bash
-npm install
-```
-
-Build asset frontend:
-
-```bash
-npm run build
-```
-
-### 7. Jalankan Aplikasi
-
-Jalankan server Laravel:
-
-```bash
-php artisan serve
-```
-
-Untuk development frontend, jalankan terminal terpisah:
-
-```bash
-npm run dev
-```
-
-Buka aplikasi melalui browser:
-
-```text
-http://127.0.0.1:8000
-```
-
-## API / Route Endpoints
-
-Dokumentasi endpoint aplikasi.
-
-### Public
-
-| Method | Endpoint | Deskripsi |
-|---|---|---|
-| GET | `/` | Halaman utama aplikasi |
-| GET | `/login` | Halaman login |
-| POST | `/login` | Proses autentikasi login |
-
-### Authenticated User (Login Required)
-
-| Method | Endpoint | Middleware | Deskripsi |
-|---|---|---|---|
-| POST | `/logout` | `auth` | Logout pengguna |
-
-### Admin Access (`auth`, `role:admin`)
-
-| Method | Endpoint | Middleware | Deskripsi |
-|---|---|---|---|
-| GET | `/admin/dashboard` | `auth`, `role:admin` | Menampilkan dashboard Admin |
-
-### User Access (`auth`, `role:user`)
-
-| Method | Endpoint | Middleware | Deskripsi |
-|---|---|---|---|
-| GET | `/user/dashboard` | `auth`, `role:user` | Menampilkan dashboard User |
-
-## Role dan Hak Akses
-
-| Role | Hak Akses |
-|---|---|
-| Admin | Mengakses halaman Admin Dashboard |
-| User | Mengakses halaman User Dashboard |
-
-Setiap role memiliki pembatasan akses menggunakan middleware `role`.
+- **Repositori Resmi Tim:** `https://github.com/PAW-Ganjil-2627-SI/4910_Tim_B_SportHub.git`
+- **Kelas / Kelompok:** SI-49-10 — Tim B (Kelompok 3)
 
 ---
 
-# Git Workflow dan Pull Request
+## 1. Pembagian Modul & Branch Anggota
 
-Setiap contributor wajib menggunakan branch terpisah dan mengajukan Pull Request (PR).
+Keempat anggota sudah terdaftar sebagai **Contributors** pada repositori ini. Setiap anggota wajib bekerja pada branch modul masing-masing sesuai tabel berikut:
 
-**Dilarang melakukan push langsung ke branch `main` repository utama.**
-
-## 1. Konfigurasi Remote Repository
-
-Periksa remote repository:
-
-```bash
-git remote -v
-```
-
-Pastikan `origin` mengarah ke repository fork milik local.
-
-Tambahkan repository utama sebagai `upstream`:
-
-```bash
-git remote add upstream git@github.com:ftzarqa/SI4910_Tim_B_SportHub.git
-```
-
-Periksa kembali:
-
-```bash
-git remote -v
-```
-
-Contoh hasil:
-
-```text
-origin    git@github.com:USERNAME/SI4910_Tim_B_SportHub.git
-upstream  git@github.com:ftzarqa/SI4910_Tim_B_SportHub.git
-```
-
-## 2. Sinkronisasi Repository
-
-Sinkronkan branch `main` local dengan repository utama:
-
-```bash
-git switch main
-git fetch upstream
-git pull --ff-only upstream main
-git push origin main
-```
-
-Branch `main` pada repository fork akan mengikuti repository utama.
-
-## 3. Membuat Branch Baru
-
-Buat branch baru untuk setiap fitur atau perbaikan.
-
-Contoh:
-
-```bash
-git switch -c feature/login
-```
-
-Contoh penamaan branch:
-
-| Prefix | Kegunaan | Contoh |
-|---|---|---|
-| `feature/` | Menambahkan fitur | `feature/register` |
-| `fix/` | Memperbaiki bug | `fix/login-error` |
-| `update/` | Memperbarui fitur | `update/dashboard` |
-| `docs/` | Memperbarui dokumentasi | `docs/readme` |
-
-## 4. Commit Perubahan
-
-Setelah selesai mengerjakan fitur, periksa perubahan:
-
-```bash
-git status
-```
-
-Tambahkan perubahan ke staging area:
-
-```bash
-git add .
-```
-
-Lakukan commit:
-
-```bash
-git commit -m "feat: add login feature"
-```
-
-## 5. Push ke Repository Fork
-
-Push branch yang sudah dibuat ke repository fork:
-
-```bash
-git push -u origin feature/login
-```
-
-Perubahan akan dikirim ke branch `feature/login`.
-
-## 6. Membuat Pull Request (PR)
-
-Setelah berhasil melakukan push:
-
-1. Buka repository fork di GitHub.
-2. Pilih branch yang sudah di-push, misalnya `feature/login`.
-3. Klik **Contribute** kemudian **Open pull request**, atau klik **Compare & pull request** jika tersedia.
-4. Pastikan konfigurasi Pull Request sebagai berikut:
-
-**Base repository:**
-`UserHan9/Sistem-Informasi-Rental-Mobil`
-
-**Base branch:**
-`main`
-
-**Head repository:**
-`USERNAME/Sistem-Informasi-Rental-Mobil`
-
-**Compare branch:**
-`feature/login`
-
-5. Isi judul dan deskripsi Pull Request.
-6. Periksa kembali file yang mengalami perubahan.
-7. Klik **Create pull request**.
-
-## 7. Review dan Merge
-
-Setelah Pull Request dibuat:
-
-1. Maintainer repository utama akan memeriksa perubahan kode.
-2. Jika kesalahan atau konflik, contributor diminta melakukan perbaikan.
-3. Jika perubahan sudah sesuai, sayah dapat menyetujui Pull Request.
-4. Maintainer melakukan merge ke branch `main`.
-
-## 8. Sinkronisasi Jika Ada Perubahan Terbaru
-
-Jika repository utama sudah mendapatkan perubahan dari contributor lain, sinkronkan branch fitur:
-
-```bash
-git fetch upstream
-git switch feature/login
-git merge upstream/main
-```
-
-Jika terjadi conflict:
-
-1. Buka file yang mengalami conflict.
-2. Perbaiki bagian kode.
-3. Simpan perubahan.
-
-jalankan:
-
-```bash
-git add .
-git commit -m "fix: resolve merge conflicts"
-git push origin feature/login
-```
-
-Pull Request akan otomatis diperbarui setelah push.
+| Anggota | GitHub Username | Peran & Modul | Route Utama | Nama Branch |
+| :--- | :--- | :--- | :--- | :--- |
+| **Iffat** (Ketua / Maintainer) | `@ftzarqa` | Rental Alat Olahraga | `/alat-olahraga` | `main` *(sudah terintegrasi)* |
+| **Orel** | `@aurelnisaw` | Manajemen Lapangan & Area | `/lapangan` | `feature/lapangan` |
+| **Yogi** | `@yogwhoss` | Manajemen Pelanggan & Member | `/member` | `feature/member` |
+| **Alpi** | `@alfifauzanmaulana-sys` | Direktori Instruktur & Coach | `/instruktur` | `feature/instruktur` |
 
 ---
 
-## Aturan Penting untuk Contributor
+## 2. Aturan Wajib Anti-Konflik (Wajib Dibaca Sebelum Coding & Merge)
 
-1. Jangan melakukan push langsung ke branch `main`.
-2. Selalu buat branch baru untuk setiap fitur atau perbaikan.
-3. Lakukan sinkronisasi dengan `upstream/main` sebelum ngoding.
-4. Gunakan commit message yang jelas.
-5. Semua perubahan wajib melalui Pull Request.
-6. Jangan menggunakan `git push --force` pada branch `main`.
-7. Jangan memasukkan file `.env` atau kredensial ke repository.
+Agar proses penggabungan (*merging*) keempat modul ke branch `main` berjalan mulus tanpa *merge conflict*, seluruh anggota wajib mematuhi aturan isolasi file berikut:
 
-## Git Workflow
+### A. File Inti yang Dilarang Diubah atau Dihapus
+1. **`resources/views/layouts/app.blade.php`**: Layout utama (navbar & footer) sudah dikonfigurasi dengan 4 menu navigasi yang mengarah ke `route('lapangan.index')`, `route('alat-olahraga.index')`, `route('member.index')`, dan `route('instruktur.index')`. Seluruh halaman modul wajib memakai `@extends('layouts.app')` dan `@section('content')`.
+2. **Autentikasi & Role Middleware**: Jangan mengubah `LoginController`, `RoleMiddleware`, file migration tabel `users`, maupun `UserSeeder`.
+3. **Kode Modul Anggota Lain**: Jangan memodifikasi Controller, Model, Migration, Seeder, atau folder View milik anggota lain.
 
-```text
-Repository Utama (upstream)
-          |
-          v
-     Fork Repository
-          |
-          v
-     Clone Repository
-          |
-          v
-    Sinkronisasi Main
-          |
-          v
-     Buat Branch Baru
-     (feature/login)
-          |
-          v
-      Coding & Commit
-          |
-          v
-    Push ke Repository Fork
-          |
-          v
-      Create Pull Request
-          |
-          v
-       Code Review
-          |
-          v
-     Approved & Merge
-          |
-          v
-  Repository Utama (main)
-```
-# Git Workflow (Direct Branch)
+### B. Isolasi Penamaan File per Modul
+Setiap anggota hanya membuat dan mengubah file di dalam ruang lingkup modulnya masing-masing:
 
-Metode ini digunakan agar setiap contributor dapat bekerja pada branch masing-masing dalam satu repository utama tanpa menggunakan Fork maupun Pull Request.
+| Komponen | Orel (`/lapangan`) | Yogi (`/member`) | Alpi (`/instruktur`) |
+| :--- | :--- | :--- | :--- |
+| **Controller** | `app/Http/Controllers/LapanganController.php` | `app/Http/Controllers/MemberController.php` | `app/Http/Controllers/InstrukturController.php` |
+| **Model** | `app/Models/Lapangan.php` | `app/Models/Member.php` | `app/Models/Instruktur.php` |
+| **Migration** | `*_create_lapangans_table.php` | `*_create_members_table.php` | `*_create_instrukturs_table.php` |
+| **Seeder** | `database/seeders/LapanganSeeder.php` | `database/seeders/MemberSeeder.php` | `database/seeders/InstrukturSeeder.php` |
+| **Views** | `resources/views/lapangan/*.blade.php` | `resources/views/member/*.blade.php` | `resources/views/instruktur/*.blade.php` |
 
-Setiap anggota wajib menggunakan branch yang berbeda agar perubahan kode tidak saling bertabrakan.
+### C. Cara Aman Mengedit 2 File Bersama
+Hanya ada **dua file bersama** yang boleh disentuh oleh setiap anggota:
 
-## 1. Clone Repository
+1. **`routes/web.php`**
+   Cari blok route *placeholder* milik modulmu saja, lalu ganti dengan `Route::resource(...)` milikmu. **Jangan menghapus atau menggeser baris route milik anggota lain.**
+   ```php
+   // Contoh untuk Orel (cukup ubah bagian /lapangan saja):
+   Route::resource('lapangan', LapanganController::class);
+   ```
 
-Clone repository utama:
+2. **`database/seeders/DatabaseSeeder.php`**
+   Tambahkan pemanggilan seeder modulmu di baris paling bawah di dalam method `run()` tanpa menghapus `UserSeeder` dan `AlatOlahragaSeeder`:
+   ```php
+   $this->call([
+       UserSeeder::class,
+       AlatOlahragaSeeder::class,
+       LapanganSeeder::class,   // tambahkan seeder modulmu di sini
+   ]);
+   ```
 
+---
+
+## 3. Instalasi & Menjalankan Proyek Lokal
+
+### Opsi A — Menggunakan Docker Sail (Linux / macOS / WSL2)
 ```bash
-git clone git@github.com:ftzarqa/SI4910_Tim_B_SportHub.git
+cp .env.example .env
+./start-dev.sh
+./vendor/bin/sail artisan migrate:fresh --seed
 ```
+Buka di browser: **`http://localhost:8080/login`**
 
-Masuk ke direktori project:
+### Opsi B — Menggunakan PHP & MySQL Lokal (Laragon / XAMPP Windows)
+1. Buka phpMyAdmin / MySQL dan buat database baru bernama **`sporthub_db`**.
+2. Jalankan perintah berikut di terminal proyek:
+   ```bash
+   composer install
+   cp .env.example .env
+   php artisan key:generate
+   ```
+3. Sesuaikan konfigurasi database pada file `.env`:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=sporthub_db
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+4. Jalankan migrasi, seeder, build aset frontend, dan server lokal:
+   ```bash
+   php artisan migrate:fresh --seed
+   npm install && npm run build
+   php artisan serve
+   ```
+Buka di browser: **`http://127.0.0.1:8000/login`**
 
+### Akun Demo Login
+| Role | Email | Password | Hak Akses |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@gmail.com` | `admin123` | Kelola penuh (Tambah, Edit, Hapus data) |
+| **User / Member** | `user@gmail.com` | `user123` | Melihat katalog & detail layanan |
+
+---
+
+## 4. Alur Kerja Git (Clone, Branch, Sync, & Pull Request)
+
+**Dilarang melakukan `git push` langsung ke branch `main`.**
+
+### Langkah 1 — Clone & Sinkronisasi `main`
 ```bash
-cd SI4910_Tim_B_SportHub
-```
-
-## 2. Sinkronisasi Repository
-
-Sebelum mulai coding, ambil perubahan terbaru dari repository:
-
-```bash
+git clone https://github.com/PAW-Ganjil-2627-SI/4910_Tim_B_SportHub.git
+cd 4910_Tim_B_SportHub
 git switch main
 git pull origin main
 ```
 
-## 3. Membuat Branch Masing-Masing
-
-Setiap contributor wajib membuat branch sendiri.
-
-Contoh:
-
+### Langkah 2 — Buat Branch Baru Sebelum `git switch`
+Buat branch baru terlebih dahulu sebelum berpindah ke branch tersebut sesuai pembagian tugas:
 ```bash
-git switch -c feature/login
+# Pilih sesuai tugas masing-masing:
+git branch feature/lapangan && git switch feature/lapangan       # Orel
+git branch feature/member && git switch feature/member           # Yogi
+git branch feature/instruktur && git switch feature/instruktur   # Alpi
 ```
 
-Contoh pembagian branch:
-
-| Contributor | Branch |
-|---|---|
-| Anggota 1 | `feature/login` |
-| Anggota 1 | `feature/register` |
-| Anggota 2 | `feature/dashboard` |
-| Anggota 1 | `feature/lapangan` |
-| Anggota 2 | `feature/alat` |
-| Anggota 3 | `feature/member` |
-| Anggota 4 | `feature/coach` |
-
-Contoh prefix branch:
-
-| Prefix | Kegunaan | Contoh |
-|---|---|---|
-| `feature/` | Menambahkan fitur | `feature/register` |
-| `fix/` | Memperbaiki bug | `fix/login-error` |
-| `update/` | Memperbarui fitur | `update/dashboard` |
-| `docs/` | Memperbarui dokumentasi | `docs/readme` |
-
-> Pastikan setiap anggota menggunakan branch yang berbeda.
-
-## 4. Coding dan Commit
-
-Setelah selesai mengerjakan fitur, periksa perubahan:
-
+### Langkah 3 — Simpan & Push Perubahan ke Branch Modul
+Pastikan file `.env` tidak ikut ter-commit, lalu kirim perubahan ke branch masing-masing:
 ```bash
 git status
-```
-
-Tambahkan perubahan ke staging area:
-
-```bash
 git add .
+git commit -m "feat: tambah modul [nama-modul]"
+git push -u origin feature/[nama-modul]
 ```
 
-Lakukan commit:
-
-```bash
-git commit -m "feat: add login feature"
-```
-
-Contoh commit message:
-
-```bash
-git commit -m "feat: add register feature"
-git commit -m "fix: resolve login validation"
-git commit -m "update: improve dashboard layout"
-```
-
-## 5. Push ke Branch Masing-Masing
-
-Push perubahan ke branch yang sudah dibuat:
-
-```bash
-git push -u origin feature/login
-```
-
-Ganti `feature/login` sesuai branch masing-masing.
-
-Contoh:
-
-Anggota 1:
-
-```bash
-git push -u origin feature/login
-```
-
-Anggota 2:
-
-```bash
-git push -u origin feature/register
-```
-
-Anggota 3:
-
-```bash
-git push -u origin feature/member
-```
-
-Anggota 4:
-
-```bash
-git push -u origin feature/coach
-```
-
-Anggota 2:
-
-```bash
-git push -u origin feature/alat
-```
-
-Setelah push berhasil, perubahan akan tersimpan pada branch masing-masing di GitHub dan tidak langsung mengubah branch `main`.
-
-## 6. Push Perubahan Berikutnya
-
-Jika sebelumnya sudah pernah melakukan push pada branch tersebut, cukup jalankan:
-
-```bash
-git add .
-git commit -m "update: improve login feature"
-git push origin feature/login
-```
-
-Tidak perlu membuat branch baru lagi selama masih mengerjakan fitur yang sama.
-
-## 7. Mengambil Perubahan Terbaru dari Main
-
-Jika branch `main` mendapatkan perubahan terbaru dari anggota lain atau maintainer, ambil perubahan tersebut:
-
+### Langkah 4 — Sinkronisasi Wajib Sebelum Pull Request (Anti-Konflik)
+Sebelum membuat Pull Request—atau setiap kali ada anggota lain yang baru selesai di-*merge* ke `main`—tarik pembaruan terbaru dari `main` ke branch fiturmu terlebih dahulu:
 ```bash
 git fetch origin
+git switch feature/[nama-modul]
+git merge origin/main
 ```
+- Jika muncul *conflict* pada `routes/web.php` atau `DatabaseSeeder.php`, buka file tersebut dan **pertahankan kode milikmu beserta kode milik anggota lain** (jangan hapus salah satunya).
+- Setelah dirapikan, jalankan kembali:
+  ```bash
+  git add .
+  git commit -m "fix: selaraskan route dan seeder dengan main"
+  git push origin feature/[nama-modul]
+  ```
 
-Pindah ke branch main:
-
-```bash
-git switch main
-git pull origin main
-```
-
-Kembali ke branch masing-masing:
-
-```bash
-git switch feature/login
-```
-
-Gabungkan perubahan terbaru dari main ke branch fitur:
-
-```bash
-git merge main
-```
-
-Jika terjadi conflict:
-
-1. Buka file yang mengalami conflict.
-2. Perbaiki bagian kode.
-3. Simpan perubahan.
-4. Jalankan:
-
-```bash
-git add .
-git commit -m "fix: resolve merge conflicts"
-git push origin feature/login
-```
-
-## 8. Melihat Daftar Branch
-
-Untuk melihat seluruh branch lokal:
-
-```bash
-git branch
-```
-
-Untuk melihat seluruh branch yang tersedia di repository remote:
-
-```bash
-git branch -r
-```
-
-Untuk berpindah branch:
-
-```bash
-git switch feature/login
-```
-
-Untuk membuat branch baru:
-
-```bash
-git switch -c feature/nama-fitur
-```
+### Langkah 5 — Buat Pull Request (PR) & Merging Berurutan
+1. Buka `https://github.com/PAW-Ganjil-2627-SI/4910_Tim_B_SportHub`.
+2. Klik tab **Pull requests** → **New pull request**.
+3. Pastikan arah penggabungan sudah benar: **base:** `main` ← **compare:** `feature/[nama-modul]`.
+4. Klik **Create pull request**.
+5. **Proses Merge Bareng:** Maintainer akan meninjau *compare code* dan melakukan **Merge pull request** satu per satu secara berurutan (setelah 1 PR di-*merge*, anggota berikutnya menjalankan **Langkah 4** sebelum PR-nya di-*merge*).
 
 ---
 
-**Catatan:** Push ke branch masing-masing tidak otomatis menggabungkan kode ke `main`. Penggabungan ke `main` dilakukan secara terpisah oleh maintainer setelah perubahan diperiksa dan dinyatakan siap.
+## 5. Checklist Sebelum Mengajukan Pull Request
+
+- [ ] Seluruh view modul sudah memakai `@extends('layouts.app')`.
+- [ ] Route *placeholder* lama untuk modul sendiri di `routes/web.php` sudah diganti tanpa menyentuh route anggota lain.
+- [ ] Seeder modul sudah didaftarkan di `DatabaseSeeder.php` dan lulus uji `migrate:fresh --seed`.
+- [ ] Sudah menjalankan `git merge origin/main` di branch fitur sehingga status PR di GitHub bertuliskan **Able to merge**.
